@@ -37,5 +37,6 @@ public class ArticleImageDownload extends AsyncTask<String, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         this.imageView.setImageBitmap(result);
+
     }
 }

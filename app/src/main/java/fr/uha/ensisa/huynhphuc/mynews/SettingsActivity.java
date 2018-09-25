@@ -13,12 +13,12 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Spinner country_spinner = (Spinner) findViewById(R.id.country_spinner);
+        Spinner language_spinner = (Spinner) findViewById(R.id.language_spinner);
         Spinner category_spinner = (Spinner) findViewById(R.id.category_spinner);
         Spinner pageSize_spinner = (Spinner) findViewById(R.id.pageSize_spinner);
 
-        ArrayAdapter<CharSequence> country_adapter = ArrayAdapter.createFromResource(this,
-                R.array.country_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> language_adapter = ArrayAdapter.createFromResource(this,
+                R.array.language_array, android.R.layout.simple_spinner_item);
         ArrayAdapter<CharSequence> category_adapter = ArrayAdapter.createFromResource(this,
                 R.array.category_array, android.R.layout.simple_spinner_item);
         ArrayAdapter<CharSequence> pageSize_adapter = ArrayAdapter.createFromResource(this,
@@ -26,16 +26,13 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-        country_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        language_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pageSize_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        country_spinner.setAdapter(country_adapter);
+        language_spinner.setAdapter(language_adapter);
         category_spinner.setAdapter(category_adapter);
         pageSize_spinner.setAdapter(pageSize_adapter);
-
-        Log.d("sucess","ok");
-
 
     }
 }

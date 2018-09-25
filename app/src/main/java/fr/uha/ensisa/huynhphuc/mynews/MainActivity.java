@@ -15,6 +15,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +36,10 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private EditText query;
+    private Settings settings;
 
     public class ArticleHttpRequest extends AsyncTask<String,Integer,String> {
 
-        //private ProgressBar bar;
         private ArrayList<Article> articlesList = new ArrayList<Article>();
 
         @Override
@@ -126,30 +128,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-
         if(item.getItemId() == R.id.settings_item){
             Intent intent = new Intent(this,SettingsActivity.class);
             startActivity(intent);
         }
-
-        /*if(item.isChecked()){
-            item.setChecked(false);
-        }else {
-            item.setChecked(true);
-            //Toast.makeText(getApplicationContext(),item.getTitle(),Toast.LENGTH_LONG).show();
-        }*/
-
         return super.onOptionsItemSelected(item);
     }
 
-    public void executeQueryWithSettings(EditText edit_query){
+    public void executeQueryWithSettings(){
 
-        /*Group category_group = (Group) this.findViewById(R.id.category_group);
-        Group country_group = (Group) this.findViewById(R.id.country_group);
-        Group pageSize_group = (Group) this.findViewById(R.id.pageSize_group);
-        */
-
-        Settings settings = new Settings();
+        if(!this.settings.haveSetting("language")){
+            LanguageSetting languageSetting = new LanguageSetting();
+            languageSetting.setValue("fr");
+            this.settings.addSetting(languageSetting);
+        }
+        String query = this.query.getText().toString();
+        Log.d("Full query = ", settings.setSettings(query));
+        new ArticleHttpRequest().execute(settings.setSettings(query));
 
     }
 
@@ -159,23 +154,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.query = findViewById(R.id.query);
+        this.settings = new Settings();
+
         query.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
 
-                    String queryText = query.getText().toString();
-                    Log.d("Your query : " , queryText);
-                    String url =  "https://newsapi.org/v2/everything?q="
-                            + queryText + "&" +
-                            "from=2018-09-14&"+
-                            "language=fr&" +
-                            "apiKey=18b73b4602ee45b0a0d206ff0c619d23";
-
-                    new ArticleHttpRequest().execute(url);
-
+                    executeQueryWithSettings();
                     handled = true;
+
                 }
                 return handled;
             }
@@ -185,16 +174,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String queryText = query.getText().toString();
-                Log.d("Your query : " , queryText);
-                String url =  "https://newsapi.org/v2/everything?q="
-                        + queryText + "&" +
-                        "from=2018-09-14&"+
-                        "language=fr&" +
-                        "apiKey=18b73b4602ee45b0a0d206ff0c619d23";
-
-                new ArticleHttpRequest().execute(url);
+                executeQueryWithSettings();
             }
         });
 

@@ -6,7 +6,7 @@
     <string name="buttonText">Rechercher</string>
     <string name="country_item">Pays</string>
     <string name="category_item">Catégories</string>
-    <string-array name="country_array">
+    <string-array name="language_array">
         <item name="fr">fr</item>
         <item name="us">us</item>
         <item name="it">it</item>

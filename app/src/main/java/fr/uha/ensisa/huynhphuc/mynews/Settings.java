@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Settings extends ArticleSetting {
 
-    private final static String BASE_URL = "https://newsapi.org/v2/top-headlines?";
+    private final static String BASE_URL = "https://newsapi.org/v2/everything?";
     private final static String API_KEY = "18b73b4602ee45b0a0d206ff0c619d23";
     private ArrayList<ArticleSetting> settings;
 
@@ -28,6 +28,7 @@ public class Settings extends ArticleSetting {
         queryWithSettings.append(BASE_URL);
         for(int i = 0 ; i < settings.size() ; i++){
             queryWithSettings.append(settings.get(i).toString());
+            queryWithSettings.append("&");
         }
         queryWithSettings.append("q=" + query);
         queryWithSettings.append("&");
@@ -35,4 +36,26 @@ public class Settings extends ArticleSetting {
 
         return queryWithSettings.toString();
     }
+
+    public ArrayList<ArticleSetting> getSettingsList() {
+        return settings;
+    }
+
+    public boolean haveSetting(String setting_type){
+        for(ArticleSetting setting: this.getSettingsList()) {
+            return setting.getTag().equals(setting_type);
+        }
+        return false;
+    }
+
+    public ArticleSetting getSetting(String setting_type){
+        for(ArticleSetting setting: this.getSettingsList()) {
+            if(setting.getTag().equals(setting_type)){
+                    return setting;
+            }
+        }
+        return null;
+    }
+
+
 }
