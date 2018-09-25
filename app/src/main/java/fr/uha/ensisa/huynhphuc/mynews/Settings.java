@@ -10,16 +10,63 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Settings extends ArticleSetting implements Parcelable {
+public class Settings implements Parcelable {
 
     private final static String BASE_URL = "https://newsapi.org/v2/everything?";
     private final static String API_KEY = "18b73b4602ee45b0a0d206ff0c619d23";
-    private ArrayList<ArticleSetting> settings;
 
+    private String language;
+    private String pageSize;
+    private String sortBy;
+    private String from;
+    private String to;
 
-    public Settings() {
-        super("NONE","NONE");
-        this.settings = new ArrayList<ArticleSetting>();
+    public Settings(String language, String pageSize, String sortBy, String from, String to) {
+        this.language = language;
+        this.pageSize = pageSize;
+        this.sortBy = sortBy;
+        this.from = from;
+        this.to = to;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public String getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(String pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 
     public static final Creator<Settings> CREATOR = new Creator<Settings>() {
@@ -35,9 +82,11 @@ public class Settings extends ArticleSetting implements Parcelable {
     };
 
     public Settings(Parcel in) {
-        super("","");
-        this.getSetting("language").setValue(in.readString());
-        this.getSetting("pageSize").setValue(in.readString());
+        this.language = in.readString();
+        this.pageSize = in.readString();
+        this.sortBy = in.readString();
+        this.from = in.readString();
+        this.to = in.readString();
     }
 
     @Override
@@ -47,27 +96,37 @@ public class Settings extends ArticleSetting implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.getSetting("language").getValue());
-        dest.writeString(this.getSetting("pageSize").getValue());
+        dest.writeString(language);
+        dest.writeString(pageSize);
+        dest.writeString(sortBy);
+        dest.writeString(from);
+        dest.writeString(to);
     }
 
-    public void addSetting(ArticleSetting setting){
-        this.settings.add(setting);
-    }
-
-    public void updateSetting(ArticleSetting setting, String new_value){
-        ((ArticleSetting) this.settings.get(this.settings.indexOf(setting))).setValue(new_value);
-    }
-
-    public String setSettings(String query){
+    public String applySettings(String query){
 
         StringBuilder queryWithSettings = new StringBuilder();
 
         queryWithSettings.append(BASE_URL);
-        for(int i = 0 ; i < settings.size() ; i++){
-            queryWithSettings.append(settings.get(i).toString());
+
+        queryWithSettings.append("language=" + language);
+        queryWithSettings.append("&");
+
+        queryWithSettings.append("pageSize=" + pageSize);
+        queryWithSettings.append("&");
+
+        queryWithSettings.append("sortBy=" + sortBy);
+        queryWithSettings.append("&");
+
+        if(from != null){
+            queryWithSettings.append("from=" + from);
             queryWithSettings.append("&");
         }
+        if(to != null){
+            queryWithSettings.append("to=" + to);
+            queryWithSettings.append("&");
+        }
+
         queryWithSettings.append("q=" + query);
         queryWithSettings.append("&");
         queryWithSettings.append("apiKey=" + API_KEY);
@@ -75,30 +134,4 @@ public class Settings extends ArticleSetting implements Parcelable {
         return queryWithSettings.toString();
     }
 
-    public ArrayList<ArticleSetting> getSettingsList() {
-        return settings;
-    }
-
-    public boolean haveSetting(String setting_type){
-        for(ArticleSetting setting: this.getSettingsList()) {
-            return setting.getTag().equals(setting_type);
-        }
-        return false;
-    }
-
-    public ArticleSetting getSetting(String setting_type){
-        for(ArticleSetting setting: this.getSettingsList()) {
-            if(setting.getTag().equals(setting_type)){
-                    return setting;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return "Settings{" +
-                "settings=" + settings.toString() +
-                '}';
-    }
 }

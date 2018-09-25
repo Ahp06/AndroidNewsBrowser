@@ -33,6 +33,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/sortBy_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="@string/sortBy_text" />
+
+    <Spinner
+        android:id="@+id/sortBy_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0" />
+
     <Button
         android:id="@+id/valid_button"
         android:layout_width="match_parent"

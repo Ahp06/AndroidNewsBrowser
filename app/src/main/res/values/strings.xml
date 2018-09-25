@@ -6,14 +6,13 @@
     <string name="buttonText">Rechercher</string>
     <string name="country_item">Pays</string>
     <string name="category_item">Catégories</string>
+
     <string-array name="language_array">
-        <item name="fr">fr</item>
-        <item name="us">us</item>
-        <item name="it">it</item>
-        <item name="es">es</item>
         <item name="de">de</item>
-        <item name="gb">gb</item>
-        <item name="jp">jp</item>
+        <item name="en">en</item>
+        <item name="es">es</item>
+        <item name="fr">fr</item>
+        <item name="it">it</item>
     </string-array>
 
     <string-array name="category_array">
@@ -32,6 +31,14 @@
         <item name="pageSize80">80</item>
         <item name="pageSize100">100</item>
     </string-array>
+
+    <string-array name="sortBy_array">
+        <item name="relevancy">relevancy</item>
+        <item name="popularity">popularity</item>
+        <item name="publishedAt">publishedAt</item>
+    </string-array>
+
+
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -107,7 +114,8 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="country_text">Pays :</string>
     <string name="category_text">Catégorie :</string>
-    <string name="pageSize_text">Nombre de pages :</string>
+    <string name="pageSize_text">Nombre d\'articles :</string>
     <string name="valid_button">Valider</string>
+    <string name="sortBy_text">Trier par :</string>
 
 </resources>

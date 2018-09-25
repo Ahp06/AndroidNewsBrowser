@@ -3,7 +3,6 @@ package fr.uha.ensisa.huynhphuc.mynews;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.constraint.Group;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,11 +13,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -131,20 +126,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId() == R.id.settings_item){
             Intent intent = new Intent(this,SettingsActivity.class);
-
             if(init_settings){
-                this.settings = new Settings();
-                LanguageSetting languageSetting = new LanguageSetting("fr");
-                PageSizeSetting pageSizeSetting = new PageSizeSetting("20");
-                this.settings.addSetting(languageSetting);
-                this.settings.addSetting(pageSizeSetting);
-
                 Bundle bundle = new Bundle();
-                bundle.putParcelable("settings",settings);
+                bundle.putParcelable("settings", settings);
                 intent.putExtras(bundle);
                 Log.d("Intent : ", "Settings initialized");
-                startActivity(intent);
             }
+            startActivity(intent);
             init_settings = false;
         }
         return super.onOptionsItemSelected(item);
@@ -153,8 +141,8 @@ public class MainActivity extends AppCompatActivity {
     public void executeQueryWithSettings(){
 
         String query = this.query.getText().toString();
-        Log.d("Full query = ", settings.setSettings(query));
-        new ArticleHttpRequest().execute(settings.setSettings(query));
+        Log.d("Full query = ", settings.applySettings(query));
+        new ArticleHttpRequest().execute(settings.applySettings(query));
 
     }
 
@@ -166,9 +154,9 @@ public class MainActivity extends AppCompatActivity {
         if(this.getIntent().hasExtra("settings")){
             Bundle bundle = this.getIntent().getExtras();
             this.settings = bundle.getParcelable("settings");
-            Log.d("Settings(MainActivity)=",  this.settings.toString());
         }else {
             this.init_settings = true;
+            this.settings = new Settings("fr","20","publishedAt","","");
         }
 
 
