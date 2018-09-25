@@ -1,16 +1,54 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class Settings extends ArticleSetting {
+public class Settings extends ArticleSetting implements Parcelable {
 
     private final static String BASE_URL = "https://newsapi.org/v2/everything?";
     private final static String API_KEY = "18b73b4602ee45b0a0d206ff0c619d23";
     private ArrayList<ArticleSetting> settings;
 
+
     public Settings() {
         super("NONE","NONE");
         this.settings = new ArrayList<ArticleSetting>();
+    }
+
+    public static final Creator<Settings> CREATOR = new Creator<Settings>() {
+        @Override
+        public Settings createFromParcel(Parcel in) {
+            return new Settings(in);
+        }
+
+        @Override
+        public Settings[] newArray(int size) {
+            return new Settings[size];
+        }
+    };
+
+    public Settings(Parcel in) {
+        super("","");
+        this.getSetting("language").setValue(in.readString());
+        this.getSetting("pageSize").setValue(in.readString());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.getSetting("language").getValue());
+        dest.writeString(this.getSetting("pageSize").getValue());
     }
 
     public void addSetting(ArticleSetting setting){
@@ -57,5 +95,10 @@ public class Settings extends ArticleSetting {
         return null;
     }
 
-
+    @Override
+    public String toString() {
+        return "Settings{" +
+                "settings=" + settings.toString() +
+                '}';
+    }
 }

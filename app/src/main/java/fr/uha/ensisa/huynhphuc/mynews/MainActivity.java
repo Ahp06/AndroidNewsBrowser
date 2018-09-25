@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText query;
     private Settings settings;
+    private boolean init_settings = false;
 
     public class ArticleHttpRequest extends AsyncTask<String,Integer,String> {
 
@@ -130,18 +131,27 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId() == R.id.settings_item){
             Intent intent = new Intent(this,SettingsActivity.class);
-            startActivity(intent);
+
+            if(init_settings){
+                this.settings = new Settings();
+                LanguageSetting languageSetting = new LanguageSetting("fr");
+                PageSizeSetting pageSizeSetting = new PageSizeSetting("20");
+                this.settings.addSetting(languageSetting);
+                this.settings.addSetting(pageSizeSetting);
+
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("settings",settings);
+                intent.putExtras(bundle);
+                Log.d("Intent : ", "Settings initialized");
+                startActivity(intent);
+            }
+            init_settings = false;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void executeQueryWithSettings(){
 
-        if(!this.settings.haveSetting("language")){
-            LanguageSetting languageSetting = new LanguageSetting();
-            languageSetting.setValue("fr");
-            this.settings.addSetting(languageSetting);
-        }
         String query = this.query.getText().toString();
         Log.d("Full query = ", settings.setSettings(query));
         new ArticleHttpRequest().execute(settings.setSettings(query));
@@ -153,9 +163,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.query = findViewById(R.id.query);
-        this.settings = new Settings();
+        if(this.getIntent().hasExtra("settings")){
+            Bundle bundle = this.getIntent().getExtras();
+            this.settings = bundle.getParcelable("settings");
+            Log.d("Settings(MainActivity)=",  this.settings.toString());
+        }else {
+            this.init_settings = true;
+        }
 
+
+        this.query = findViewById(R.id.query);
         query.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

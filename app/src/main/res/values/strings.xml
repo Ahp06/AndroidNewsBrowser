@@ -108,5 +108,6 @@
     <string name="country_text">Pays :</string>
     <string name="category_text">Catégorie :</string>
     <string name="pageSize_text">Nombre de pages :</string>
+    <string name="valid_button">Valider</string>
 
 </resources>

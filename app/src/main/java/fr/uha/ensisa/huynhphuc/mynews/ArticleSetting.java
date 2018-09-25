@@ -1,5 +1,7 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
+import android.os.Parcelable;
+
 public abstract class ArticleSetting {
 
     private String tag;
