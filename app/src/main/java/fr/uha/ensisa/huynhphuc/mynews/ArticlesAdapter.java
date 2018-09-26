@@ -9,7 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ArticlesAdapter extends ArrayAdapter<Article> {
 
@@ -36,13 +40,29 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
             imgDownloader.execute(article.getUrlToImage());
         }
 
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date date = null;
+        try {
+            date = df.parse(article.getPublishedAt().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        DateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateFormatted = outputFormatter.format(date);
+
+        String author = "Non renseigné";
+        if(!article.getAuthor().equals(null)){
+            author = article.getAuthor();
+        }
+
         String content =
                 "<h2>" + article.getTitle() + "</h2>" +
-                        "<p> écrit par : " + article.getAuthor() + "</p>" +
+                        "<p> Auteur : " + author + "</p>" +
                         "</br>" +
                         "<p>" + article.getDescription() + "</p>" +
                         "</br>" +
-                        "<p> écrit le : " + article.getPublishedAt() + "</p>";
+                        "<p> écrit le : " + dateFormatted + "</p>";
 
         contentView.setText(Html.fromHtml(content));
 

@@ -117,5 +117,9 @@
     <string name="pageSize_text">Nombre d\'articles :</string>
     <string name="valid_button">Valider</string>
     <string name="sortBy_text">Trier par :</string>
+    <string name="save_text">Sauvegarder</string>
+    <string name="comment_text">Commenter</string>
+    <string name="from_text">Du</string>
+    <string name="to_text">Au</string>
 
 </resources>
