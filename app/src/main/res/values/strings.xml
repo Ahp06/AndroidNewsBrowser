@@ -121,5 +121,9 @@
     <string name="comment_text">Commenter</string>
     <string name="from_text">Du</string>
     <string name="to_text">Au</string>
+    <string name="pick_date">Date de début</string>
+    <string name="pick_date_from">Du</string>
+    <string name="pick_date_to">Au</string>
+    <string name="date_picker_text">N\'afficher que les articles :</string>
 
 </resources>

@@ -83,60 +83,48 @@
         android:id="@+id/valid_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="116dp"
         android:layout_weight="0"
         android:text="@string/valid_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/to" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/fromText"
+    <Button
+        android:id="@+id/date_picker_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
-        android:text="@string/from_text"
-        app:layout_constraintEnd_toStartOf="@+id/from_text"
-        app:layout_constraintHorizontal_bias="0.195"
+        android:onClick="showDatePickerDialog"
+        android:text="@string/pick_date_from"
+        app:layout_constraintEnd_toStartOf="@+id/date_picker_to"
+        app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sortBy_text" />
+        app:layout_constraintTop_toBottomOf="@+id/date_picker_text" />
 
-    <TextView
-        android:id="@+id/to"
+    <Button
+        android:id="@+id/date_picker_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="168dp"
-        android:text="@string/to_text"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="68dp"
+        android:onClick="showDatePickerDialog"
+        android:text="@string/pick_date_to"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sortBy_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/date_picker_text" />
 
-    <EditText
-        android:id="@+id/from_text"
-        android:layout_width="94dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:inputType="date"
-        app:layout_constraintEnd_toStartOf="@+id/to"
-        app:layout_constraintTop_toBottomOf="@+id/sortBy_text" />
-
-    <EditText
-        android:id="@+id/to_text"
-        android:layout_width="94dp"
-        android:layout_height="32dp"
+    <TextView
+        android:id="@+id/date_picker_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="date"
+        android:text="@string/date_picker_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.369"
-        app:layout_constraintStart_toEndOf="@+id/to"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sortBy_spinner" />
 
 </android.support.constraint.ConstraintLayout>
