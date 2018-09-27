@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -15,6 +16,8 @@ public class SettingsActivity extends AppCompatActivity {
     private Spinner language_spinner;
     private Spinner pageSize_spinner;
     private Spinner sortBy_spinner;
+    private TextView from;
+    private TextView to;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,8 @@ public class SettingsActivity extends AppCompatActivity {
         this.language_spinner = (Spinner) findViewById(R.id.language_spinner);
         this.pageSize_spinner = (Spinner) findViewById(R.id.pageSize_spinner);
         this.sortBy_spinner = (Spinner) findViewById(R.id.sortBy_spinner);
+        this.from = (TextView) findViewById(R.id.from_text);
+        this.to = (TextView) findViewById(R.id.to); 
 
         ArrayAdapter<CharSequence> language_adapter = ArrayAdapter.createFromResource(this,
                 R.array.language_array, android.R.layout.simple_spinner_item);
@@ -56,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
                 String pageSize = pageSize_spinner.getSelectedItem().toString();
                 String sortBy = sortBy_spinner.getSelectedItem().toString();
 
-                Bundle bundle = new Bundle();
+                 Bundle bundle = new Bundle();
                 settings.setLanguage(language);
                 settings.setPageSize(pageSize);
                 settings.setSortBy(sortBy);
