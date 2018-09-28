@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -126,11 +127,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId() == R.id.settings_item){
             Intent intent = new Intent(this,SettingsActivity.class);
-            if(init_settings){
+            if(init_settings){ //If init_settings = true, we need to initialize the settings
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("settings", settings);
                 intent.putExtras(bundle);
-                Log.d("Intent : ", "Settings initialized");
             }
             startActivity(intent);
             init_settings = false;
@@ -138,8 +138,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /***
+     *
+     * Execute the query with all settings by launching an ArticleHttpRequest AsyncTask
+     */
     public void executeQueryWithSettings(){
-
         String query = this.query.getText().toString();
         Log.d("Full query = ", settings.applySettings(query));
         new ArticleHttpRequest().execute(settings.applySettings(query));
@@ -156,7 +159,25 @@ public class MainActivity extends AppCompatActivity {
             this.settings = bundle.getParcelable("settings");
         }else {
             this.init_settings = true;
-            this.settings = new Settings("fr","20","publishedAt","","");
+
+            Calendar current = Calendar.getInstance();
+            int current_year = current.get(Calendar.YEAR);
+            int current_day = current.get(Calendar.DAY_OF_MONTH);
+            int current_month = current.get(Calendar.MONTH);
+
+            String to = current_year + "-" + (current_month+1) + "-" + current_day;
+
+            Calendar before = current;
+            before.add(Calendar.DAY_OF_WEEK, -7); // 7 days before today
+            int before_year = before.get(Calendar.YEAR);
+            int before_day = before.get(Calendar.DAY_OF_MONTH);
+            int before_month = before.get(Calendar.MONTH);
+
+            String from  = before_year + "-" + (before_month+1) + "-" + before_day;
+
+            Log.d("Main from&to" ,  "from = " + from + " & to = " + to);
+
+            this.settings = new Settings("fr","20","publishedAt",from,to);
         }
 
 
@@ -166,10 +187,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-
                     executeQueryWithSettings();
                     handled = true;
-
                 }
                 return handled;
             }

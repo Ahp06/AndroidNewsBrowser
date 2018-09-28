@@ -21,6 +21,7 @@ public class Settings implements Parcelable {
     private String from;
     private String to;
 
+
     public Settings(String language, String pageSize, String sortBy, String from, String to) {
         this.language = language;
         this.pageSize = pageSize;
@@ -118,11 +119,11 @@ public class Settings implements Parcelable {
         queryWithSettings.append("sortBy=" + sortBy);
         queryWithSettings.append("&");
 
-        if(from != null){
+        if(from != ""){
             queryWithSettings.append("from=" + from);
             queryWithSettings.append("&");
         }
-        if(to != null){
+        if(to != ""){
             queryWithSettings.append("to=" + to);
             queryWithSettings.append("&");
         }

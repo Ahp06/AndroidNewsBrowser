@@ -1,35 +1,58 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.widget.DatePicker;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
+@SuppressLint("ValidFragment")
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
     private String date;
+    private int year;
+    private int month;
+    private int day;
+
+    public DatePickerFragment(String date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date convertedDate = sdf.parse(date);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(convertedDate);
+
+        this.year = calendar.get(Calendar.YEAR);
+        this.month = calendar.get(Calendar.DAY_OF_MONTH);
+        this.day = calendar.get(Calendar.DAY_OF_WEEK);
+
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current date as the default date in the picker
-        final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-
-        // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), this, year, month, day);
+        return new DatePickerDialog(getActivity(), this, this.year, this.month, this.day);
     }
 
+    /**
+     * Set the date data member of this class according to news API date format.
+     * The month value is incremented because in the Android SDK, months are indexed starting at 0.
+     * @param view
+     * @param year
+     * @param month
+     * @param day
+     */
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        // Do something with the date chosen by the user
-        Log.d("Date choosen = ", year + "-" + month + "-" + day);
-        this.date = year + "-" + month + "-" + day ;
+        this.date = year + "-" + (month+1) + "-" + day ;
+    }
+
+    public String getDate() {
+        return date;
     }
 
 }

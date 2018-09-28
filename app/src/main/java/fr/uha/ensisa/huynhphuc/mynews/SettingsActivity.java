@@ -9,12 +9,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import java.text.ParseException;
+
 public class SettingsActivity extends AppCompatActivity {
 
     private Settings settings;
     private Spinner language_spinner;
     private Spinner pageSize_spinner;
     private Spinner sortBy_spinner;
+    private DialogFragment from_fragment;
+    private DialogFragment to_fragment;
 
 
     @Override
@@ -28,6 +32,14 @@ public class SettingsActivity extends AppCompatActivity {
         this.language_spinner = (Spinner) findViewById(R.id.language_spinner);
         this.pageSize_spinner = (Spinner) findViewById(R.id.pageSize_spinner);
         this.sortBy_spinner = (Spinner) findViewById(R.id.sortBy_spinner);
+
+        try {
+            this.from_fragment = new DatePickerFragment(this.settings.getFrom());
+            this.to_fragment  = new DatePickerFragment(this.settings.getTo());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
         ArrayAdapter<CharSequence> language_adapter = ArrayAdapter.createFromResource(this,
                 R.array.language_array, android.R.layout.simple_spinner_item);
@@ -57,10 +69,15 @@ public class SettingsActivity extends AppCompatActivity {
                 String pageSize = pageSize_spinner.getSelectedItem().toString();
                 String sortBy = sortBy_spinner.getSelectedItem().toString();
 
+                String from = ((DatePickerFragment) from_fragment).getDate();
+                String to = ((DatePickerFragment) to_fragment).getDate();
+
                 Bundle bundle = new Bundle();
                 settings.setLanguage(language);
                 settings.setPageSize(pageSize);
                 settings.setSortBy(sortBy);
+                if(!from.equals("")) settings.setFrom(from);
+                if(!to.equals("")) settings.setTo(to);
 
                 bundle.putParcelable("settings", settings);
 
@@ -72,11 +89,23 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    public boolean checkDates(String from, String to){
+
+
+
+
+        return false;
+    }
+
+    /**
+     * Return the specific index of an element in a spinner
+     * @param spinner
+     * @param myString
+     * @return
+     */
     public int getIndex(Spinner spinner, String myString){
-
         int index = 0;
-
-        for (int i=0;i<spinner.getCount();i++){
+        for (int i = 0 ; i < spinner.getCount(); i++){
             if (spinner.getItemAtPosition(i).equals(myString)){
                 index = i;
             }
@@ -84,10 +113,19 @@ public class SettingsActivity extends AppCompatActivity {
         return index;
     }
 
-    public void showDatePickerDialog(View view) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
+    /**
+     * Show the "from" DatePickerDialog
+     * @param view
+     */
+    public void showFromDatePicker(View view) {
+        this.from_fragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-
+    /**
+     * Show the "to" DatePickerDialog
+     * @param view
+     */
+    public void showToDatePicker(View view) {
+        this.to_fragment.show(getSupportFragmentManager(), "datePicker");
+    }
 }

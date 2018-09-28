@@ -125,5 +125,7 @@
     <string name="pick_date_from">Du</string>
     <string name="pick_date_to">Au</string>
     <string name="date_picker_text">N\'afficher que les articles :</string>
+    <string name="from_date_choosen"></string>
+    <string name="to_date_choosen"></string>
 
 </resources>
