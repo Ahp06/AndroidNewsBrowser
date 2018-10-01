@@ -4,12 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -19,6 +25,8 @@ public class SettingsActivity extends AppCompatActivity {
     private Spinner sortBy_spinner;
     private DialogFragment from_fragment;
     private DialogFragment to_fragment;
+    private TextView from_date_choosen;
+    private TextView to_date_choosen;
 
 
     @Override
@@ -32,10 +40,14 @@ public class SettingsActivity extends AppCompatActivity {
         this.language_spinner = (Spinner) findViewById(R.id.language_spinner);
         this.pageSize_spinner = (Spinner) findViewById(R.id.pageSize_spinner);
         this.sortBy_spinner = (Spinner) findViewById(R.id.sortBy_spinner);
+        this.from_date_choosen = (TextView) findViewById(R.id.from_date_choosen);
+        this.to_date_choosen = (TextView) findViewById(R.id.to_date_choosen);
 
         try {
-            this.from_fragment = new DatePickerFragment(this.settings.getFrom());
-            this.to_fragment  = new DatePickerFragment(this.settings.getTo());
+            this.from_fragment = new DatePickerFragment(this, "from", this.settings.getFrom());
+            this.to_fragment  = new DatePickerFragment(this, "to", this.settings.getTo());
+            this.from_date_choosen.setText("Du " + this.settings.getFrom());
+            this.to_date_choosen.setText("Au " + this.settings.getTo());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -79,22 +91,36 @@ public class SettingsActivity extends AppCompatActivity {
                 if(!from.equals("")) settings.setFrom(from);
                 if(!to.equals("")) settings.setTo(to);
 
-                bundle.putParcelable("settings", settings);
+                try {
+                    if (checkDates(from,to)){
+                        bundle.putParcelable("settings", settings);
+                        Intent intent = new Intent(v.getContext(), MainActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SettingsActivity.this, "Choix des dates incorrect", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-                Intent intent = new Intent(v.getContext(), MainActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
             }
         });
 
     }
 
-    public boolean checkDates(String from, String to){
+    public boolean checkDates(String from, String to) throws ParseException {
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date from_date = sdf.parse(from);
+        Date to_date = sdf.parse(to);
 
+        int ok = to_date.compareTo(from_date);
+        // ok = 1 -> to_date > from_date
+        // ok = 0 -> to_date = from_date
+        // ok = -1 -> to_date < from_date
 
-
-        return false;
+        return ok == 1;
     }
 
     /**
