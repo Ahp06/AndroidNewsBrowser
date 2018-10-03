@@ -127,13 +127,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId() == R.id.settings_item){
             Intent intent = new Intent(this,SettingsActivity.class);
-            if(init_settings){ //If init_settings = true, we need to initialize the settings
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("settings", settings);
-                intent.putExtras(bundle);
-            }
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("settings", settings);
+            intent.putExtras(bundle);
             startActivity(intent);
-            init_settings = false;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -158,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = this.getIntent().getExtras();
             this.settings = bundle.getParcelable("settings");
         }else {
-            this.init_settings = true;
-
             Calendar current = Calendar.getInstance();
             int current_year = current.get(Calendar.YEAR);
             int current_day = current.get(Calendar.DAY_OF_MONTH);

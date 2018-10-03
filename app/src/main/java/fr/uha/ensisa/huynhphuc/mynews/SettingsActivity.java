@@ -36,7 +36,9 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         Bundle bundle = getIntent().getExtras();
-        this.settings = bundle.getParcelable("settings");
+        if(this.getIntent().hasExtra("settings")){
+            this.settings = bundle.getParcelable("settings");
+        }
 
         Log.d("settings from", "=" + settings.getFrom());
         Log.d("settings to", "=" + settings.getTo());

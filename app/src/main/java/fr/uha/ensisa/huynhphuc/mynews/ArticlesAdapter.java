@@ -18,9 +18,11 @@ import java.util.Date;
 public class ArticlesAdapter extends ArrayAdapter<Article> {
 
     private View convertView;
+    private String list_type;
 
-    public ArticlesAdapter(Context context, ArrayList<Article> articles) {
+    public ArticlesAdapter(Context context, ArrayList<Article> articles, String list_type) {
         super(context, 0, articles);
+        this.list_type = list_type;
     }
 
     @Override
@@ -29,7 +31,8 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
         Article article = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_list, parent, false);
+            if(list_type.equals("queryList")) convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_list, parent, false);
+            if(list_type.equals("savedList")) convertView = LayoutInflater.from(getContext()).inflate(R.layout.saved_item_list, parent, false);
         }
 
         TextView contentView = (TextView) convertView.findViewById(R.id.articleContent);
