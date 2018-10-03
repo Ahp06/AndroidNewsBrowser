@@ -38,6 +38,7 @@ public class DatePickerFragment extends DialogFragment
         this.year = calendar.get(Calendar.YEAR);
         this.month = calendar.get(Calendar.MONTH);
         this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        this.date = year + "-" + (month+1) + "-" + day;
     }
 
     @Override

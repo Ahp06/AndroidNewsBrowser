@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,6 +37,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         this.settings = bundle.getParcelable("settings");
+
+        Log.d("settings from", "=" + settings.getFrom());
+        Log.d("settings to", "=" + settings.getTo());
+
 
         this.language_spinner = (Spinner) findViewById(R.id.language_spinner);
         this.pageSize_spinner = (Spinner) findViewById(R.id.pageSize_spinner);
