@@ -14,6 +14,8 @@ public class Article implements Parcelable {
     private String publishedAt;
     private String url;
 
+    private boolean saved = false;
+
     public Article(String title, String author, String urlToImage, String description, String publishedAt, String url) {
         this.title = title;
         this.author = author;
@@ -80,6 +82,18 @@ public class Article implements Parcelable {
 
     public String getUrl() {
         return url;
+    }
+
+    public void save(){
+        this.saved = true;
+    }
+
+    public void delete(){
+        this.saved = false;
+    }
+
+    public boolean isSaved(){
+        return saved;
     }
 
     @Override

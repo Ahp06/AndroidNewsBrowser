@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -13,20 +14,21 @@ import java.util.ArrayList;
 
 public class SavedArticlesActivity extends AppCompatActivity {
 
-    private ArrayList<Article> saved_articles = new ArrayList<Article>();
+    private ArrayList<Article> saved_articles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_articles);
 
-        Bundle bundle = getIntent().getExtras();
+        saved_articles = new ArrayList<Article>();
+        if(this.getIntent().hasExtra("saved")){
+            Bundle bundle = getIntent().getExtras();
+            saved_articles.addAll(bundle.<Article>getParcelableArrayList("saved"));
+        }
 
-        saved_articles.addAll(bundle.<Article>getParcelableArrayList("data"));
-        Log.i("articles into Listview ",saved_articles.toString());
-
-        final ListView listView = (ListView) findViewById(R.id.articlesList);
-        ArticlesAdapter adapter = new ArticlesAdapter(this,saved_articles);
+        final ListView listView = (ListView) findViewById(R.id.savedList);
+        SavedArticlesAdapter adapter = new SavedArticlesAdapter(this,saved_articles);
         listView.setAdapter(adapter);
 
         listView.setClickable(true);
@@ -39,5 +41,18 @@ public class SavedArticlesActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    // à implémenter car si l'util supprime une sauvegarde alors la liste à changée
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            /*Intent intent = new Intent(this,MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("saved", this.getArticlesSaved());
+            intent.putExtras(bundle);
+            startActivity(intent);*/
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

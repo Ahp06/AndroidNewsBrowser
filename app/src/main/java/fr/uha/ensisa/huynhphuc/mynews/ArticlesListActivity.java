@@ -3,11 +3,15 @@ package fr.uha.ensisa.huynhphuc.mynews;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -21,9 +25,7 @@ public class ArticlesListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_articles_list);
 
         Bundle bundle = getIntent().getExtras();
-
         articles.addAll(bundle.<Article>getParcelableArrayList("data"));
-        Log.i("articles into Listview ",articles.toString());
 
         final ListView listView = (ListView) findViewById(R.id.articlesList);
         ArticlesAdapter adapter = new ArticlesAdapter(this,articles);
@@ -40,6 +42,31 @@ public class ArticlesListActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+    /**
+     * Return the list of articles saved
+     * @return
+     */
+    public ArrayList<Article> getArticlesSaved(){
+        ArrayList<Article> articlesSaved = new ArrayList<Article>();
+        for(Article article : articles){
+            if(article.isSaved()){
+                articlesSaved.add(article);
+            }
+        }
+        return articlesSaved;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Intent intent = new Intent(this,MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("saved", this.getArticlesSaved());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

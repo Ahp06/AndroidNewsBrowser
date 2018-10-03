@@ -16,9 +16,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ArticlesAdapter extends ArrayAdapter<Article> {
+public class SavedArticlesAdapter extends ArrayAdapter<Article> {
 
-    public ArticlesAdapter(Context context, ArrayList<Article> articles){
+    private int list_type;
+
+    public SavedArticlesAdapter(Context context, ArrayList<Article> articles) {
         super(context, 0, articles);
     }
 
@@ -28,12 +30,11 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
         final Article article = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_list, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.saved_item_list, parent, false);
         }
 
-        TextView contentView = (TextView) convertView.findViewById(R.id.articleContent);
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
-
+        TextView contentView = (TextView) convertView.findViewById(R.id.articleContent_saved);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView_saved);
 
         ArticleImageDownload imgDownloader = new ArticleImageDownload(imageView);
         if(!article.getUrlToImage().equals(null)){
@@ -68,21 +69,15 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
 
         contentView.setText(Html.fromHtml(content));
 
-
-        final Button save_button = (Button) convertView.findViewById(R.id.save_button);
-        save_button.setOnClickListener(new View.OnClickListener() {
+        final Button delete_button = (Button) convertView.findViewById(R.id.delete_button);
+        delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!article.isSaved()) {
-                    save_button.setText(R.string.saved_text);
-                    article.save();
-                } else {
-                    save_button.setText(R.string.save_text);
-                    article.delete();
-                }
+                article.delete();
             }
         });
 
         return convertView;
     }
 }
+

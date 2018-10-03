@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText query;
     private Settings settings;
-    private boolean init_settings = false;
+    private ArrayList<Article> savedArticles;
 
     public class ArticleHttpRequest extends AsyncTask<String,Integer,String> {
 
@@ -132,6 +132,16 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtras(bundle);
             startActivity(intent);
         }
+
+        if(item.getItemId() == R.id.saved_item){
+            Intent intent = new Intent(this,SavedArticlesActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("saved", savedArticles);
+            Log.d(this.getClass().getName(),"saved articles = "+ this.savedArticles.toString());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -170,9 +180,14 @@ public class MainActivity extends AppCompatActivity {
 
             String from  = before_year + "-" + (before_month+1) + "-" + before_day;
 
-            Log.d("Main from&to" ,  "from = " + from + " & to = " + to);
-
             this.settings = new Settings("fr","20","publishedAt",from,to);
+        }
+
+        if(this.getIntent().hasExtra("saved")){
+            Bundle bundle = this.getIntent().getExtras();
+            this.savedArticles = bundle.getParcelableArrayList("saved");
+        } else {
+            this.savedArticles = new ArrayList<Article>();
         }
 
 

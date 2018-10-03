@@ -5,8 +5,14 @@
     tools:ignore="AlwaysShowAction"
     android:color="@color/colorPrimaryDark">
 
+    <item android:id="@+id/saved_item"
+        android:icon="@drawable/ic_save_black_24dp"
+        android:title="Saved"
+        app:showAsAction="always" />
+
     <item android:id="@+id/settings_item"
         android:icon="@drawable/ic_settings_applications_black_24dp"
         android:title="Settings"
         app:showAsAction="always" />
+
 </menu>
