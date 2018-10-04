@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
         String query = this.query.getText().toString();
         Log.d("Full query = ", settings.applySettings(query));
         new ArticleHttpRequest().execute(settings.applySettings(query));
-
     }
 
     @Override
@@ -161,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //If settings have already been defined we recover them
+        //otherwise we instantiate them
         if(this.getIntent().hasExtra("settings")){
             Bundle bundle = this.getIntent().getExtras();
             this.settings = bundle.getParcelable("settings");
@@ -169,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             int current_year = current.get(Calendar.YEAR);
             int current_day = current.get(Calendar.DAY_OF_MONTH);
             int current_month = current.get(Calendar.MONTH);
-
+            //Current date
             String to = current_year + "-" + (current_month+1) + "-" + current_day;
 
             Calendar before = current;
@@ -180,17 +181,21 @@ public class MainActivity extends AppCompatActivity {
 
             String from  = before_year + "-" + (before_month+1) + "-" + before_day;
 
+            //default settings
             this.settings = new Settings("fr","20","publishedAt",from,to);
         }
 
-        if(this.getIntent().hasExtra("saved")){
-            Bundle bundle = this.getIntent().getExtras();
-            this.savedArticles = bundle.getParcelableArrayList("saved");
-        } else {
+        //We instantiate the saved articles if this has never been done
+        if(savedArticles == null){
             this.savedArticles = new ArrayList<Article>();
         }
+        //Otherwise we recover the extra "saved" thrown by the ArticleListActivity/SavedArticlesActivity
+        if(this.getIntent().hasExtra("saved")){
+            Bundle bundle = this.getIntent().getExtras();
+            this.savedArticles.addAll(bundle.<Article>getParcelableArrayList("saved"));
+        }
 
-
+        //we execute the search if the user presses confirm with the keyboard
         this.query = findViewById(R.id.query);
         query.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -203,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 return handled;
             }
         });
-
+        //Or if he clicks on the validate button
         Button btn = (Button) findViewById(R.id.queryButton);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

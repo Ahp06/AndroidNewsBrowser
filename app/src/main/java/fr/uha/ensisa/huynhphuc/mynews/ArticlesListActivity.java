@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class ArticlesListActivity extends AppCompatActivity {
 
     private ArrayList<Article> articles = new ArrayList<Article>();
+    private ArrayList<Article> savedArticles = new ArrayList<Article>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,12 @@ public class ArticlesListActivity extends AppCompatActivity {
         return articlesSaved;
     }
 
+    /**
+     * On key down will give the list of saved articles to the Main Activity
+     * @param keyCode
+     * @param event
+     * @return
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {

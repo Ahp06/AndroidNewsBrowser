@@ -73,9 +73,13 @@ public class SavedArticlesAdapter extends ArrayAdapter<Article> {
         delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                article.delete();
-
-                notifyDataSetChanged();
+                if (article.isSaved()) {
+                    delete_button.setText(R.string.cancel_delete_text);
+                    article.delete();
+                } else {
+                    delete_button.setText(R.string.delete_text);
+                    article.save();
+                }
             }
         });
 

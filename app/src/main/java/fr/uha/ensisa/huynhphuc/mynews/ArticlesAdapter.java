@@ -2,6 +2,7 @@ package fr.uha.ensisa.huynhphuc.mynews;
 
 import android.content.Context;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,6 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
 
         TextView contentView = (TextView) convertView.findViewById(R.id.articleContent);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
-
 
         ArticleImageDownload imgDownloader = new ArticleImageDownload(imageView);
         if(!article.getUrlToImage().equals(null)){
@@ -82,6 +82,12 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
                 }
             }
         });
+
+
+        if(article.isSaved()){
+            Log.d(this.getClass().getName(), "Article saved : " + article.getTitle());
+            save_button.setText(R.string.saved_text);
+        }
 
         return convertView;
     }
