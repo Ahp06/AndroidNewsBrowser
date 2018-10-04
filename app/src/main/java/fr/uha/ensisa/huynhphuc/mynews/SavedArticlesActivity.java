@@ -43,16 +43,32 @@ public class SavedArticlesActivity extends AppCompatActivity {
         });
     }
 
-    // à implémenter car si l'util supprime une sauvegarde alors la liste à changée
+    /**
+     * Return all saved articles from original list
+     * @return
+     */
+    public ArrayList<Article> getSavedArticles(){
+        ArrayList<Article> saved = new ArrayList<Article>();
+        for(Article article : this.saved_articles){
+            if(article.isSaved()){
+                saved.add(article);
+            }
+        }
+        return saved;
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            /*Intent intent = new Intent(this,MainActivity.class);
+            Intent intent = new Intent(this,MainActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("saved", this.getArticlesSaved());
+            bundle.putParcelableArrayList("saved", getSavedArticles());
             intent.putExtras(bundle);
-            startActivity(intent);*/
+            startActivity(intent);
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
+
 }

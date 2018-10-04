@@ -18,7 +18,7 @@ import java.util.Date;
 
 public class SavedArticlesAdapter extends ArrayAdapter<Article> {
 
-    private int list_type;
+
 
     public SavedArticlesAdapter(Context context, ArrayList<Article> articles) {
         super(context, 0, articles);
@@ -74,6 +74,8 @@ public class SavedArticlesAdapter extends ArrayAdapter<Article> {
             @Override
             public void onClick(View v) {
                 article.delete();
+
+                notifyDataSetChanged();
             }
         });
 

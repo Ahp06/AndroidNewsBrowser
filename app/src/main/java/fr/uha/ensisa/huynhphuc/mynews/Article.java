@@ -13,7 +13,6 @@ public class Article implements Parcelable {
     private String description;
     private String publishedAt;
     private String url;
-
     private boolean saved = false;
 
     public Article(String title, String author, String urlToImage, String description, String publishedAt, String url) {
@@ -45,6 +44,7 @@ public class Article implements Parcelable {
         description = in.readString();
         publishedAt = in.readString();
         url = in.readString();
+        saved = in.readByte() != 0;
     }
 
     public static final Creator<Article> CREATOR = new Creator<Article>() {
@@ -121,5 +121,6 @@ public class Article implements Parcelable {
         dest.writeString(description);
         dest.writeString(publishedAt);
         dest.writeString(url);
+        dest.writeByte((byte) (saved ? 1 : 0));     //if saved == true, byte == 1
     }
 }
