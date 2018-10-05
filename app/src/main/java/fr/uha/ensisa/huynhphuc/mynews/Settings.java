@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Settings implements Parcelable {
 
     private final static String BASE_URL = "https://newsapi.org/v2/everything?";
-    private final static String API_KEY = "18b73b4602ee45b0a0d206ff0c619d23";
+    private final static String API_KEY = BuildConfig.ApiKey;
 
     private String language;
     private String pageSize;
