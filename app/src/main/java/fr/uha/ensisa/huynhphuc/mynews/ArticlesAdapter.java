@@ -84,10 +84,10 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
         });
 
 
-        if(article.isSaved()){
+        /*if(article.isSaved()){
             Log.d(this.getClass().getName(), "Article saved : " + article.getTitle());
             save_button.setText(R.string.saved_text);
-        }
+        }*/
 
         return convertView;
     }
