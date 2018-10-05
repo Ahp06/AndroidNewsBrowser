@@ -35,10 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Bundle bundle = getIntent().getExtras();
-        if(this.getIntent().hasExtra("settings")){
-            this.settings = bundle.getParcelable("settings");
-        }
+        this.settings = DataHolder.getSettings();
 
         Log.d("settings from", "=" + settings.getFrom());
         Log.d("settings to", "=" + settings.getTo());
@@ -91,7 +88,6 @@ public class SettingsActivity extends AppCompatActivity {
                 String from = ((DatePickerFragment) from_fragment).getDate();
                 String to = ((DatePickerFragment) to_fragment).getDate();
 
-                Bundle bundle = new Bundle();
                 settings.setLanguage(language);
                 settings.setPageSize(pageSize);
                 settings.setSortBy(sortBy);
@@ -100,9 +96,8 @@ public class SettingsActivity extends AppCompatActivity {
 
                 try {
                     if (checkDates(from,to)){
-                        bundle.putParcelable("settings", settings);
                         Intent intent = new Intent(v.getContext(), MainActivity.class);
-                        intent.putExtras(bundle);
+                        DataHolder.updateSettings(settings);
                         startActivity(intent);
                     } else {
                         Toast.makeText(SettingsActivity.this, "Choix des dates incorrect", Toast.LENGTH_SHORT).show();

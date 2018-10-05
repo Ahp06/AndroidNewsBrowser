@@ -3,6 +3,7 @@ package fr.uha.ensisa.huynhphuc.mynews;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.content.res.TypedArrayUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,8 +18,8 @@ import java.util.ArrayList;
 
 public class ArticlesListActivity extends AppCompatActivity {
 
-    private ArrayList<Article> articles = new ArrayList<Article>();
-    private ArrayList<Article> savedArticles = new ArrayList<Article>();
+    //private ArrayList<Article> articles = new ArrayList<Article>();
+    //private ArrayList<Article> savedArticles = new ArrayList<Article>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +27,11 @@ public class ArticlesListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_articles_list);
 
         Bundle bundle = getIntent().getExtras();
-        articles.addAll(bundle.<Article>getParcelableArrayList("data"));
+        //articles.addAll(bundle.<Article>getParcelableArrayList("data"));
+
 
         final ListView listView = (ListView) findViewById(R.id.articlesList);
-        ArticlesAdapter adapter = new ArticlesAdapter(this,articles);
+        ArticlesAdapter adapter = new ArticlesAdapter(this, DataHolder.getArticlesList());
         listView.setAdapter(adapter);
 
         listView.setClickable(true);
@@ -49,7 +51,7 @@ public class ArticlesListActivity extends AppCompatActivity {
      * Return the list of articles saved
      * @return
      */
-    public ArrayList<Article> getArticlesSaved(){
+    /*public ArrayList<Article> getArticlesSaved(){
         ArrayList<Article> articlesSaved = new ArrayList<Article>();
         for(Article article : articles){
             if(article.isSaved()){
@@ -57,7 +59,7 @@ public class ArticlesListActivity extends AppCompatActivity {
             }
         }
         return articlesSaved;
-    }
+    }*/
 
     /**
      * On key down will give the list of saved articles to the Main Activity
@@ -65,7 +67,7 @@ public class ArticlesListActivity extends AppCompatActivity {
      * @param event
      * @return
      */
-    @Override
+    /*@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             Intent intent = new Intent(this,MainActivity.class);
@@ -75,5 +77,5 @@ public class ArticlesListActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onKeyDown(keyCode, event);
-    }
+    }*/
 }

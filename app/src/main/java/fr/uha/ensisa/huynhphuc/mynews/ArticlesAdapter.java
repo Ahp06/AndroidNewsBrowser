@@ -73,21 +73,16 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!article.isSaved()) {
+                if (!DataHolder.isSaved(article)) {
                     save_button.setText(R.string.saved_text);
-                    article.save();
+                    DataHolder.getSavedArticles().add(article);
                 } else {
                     save_button.setText(R.string.save_text);
-                    article.delete();
+                    DataHolder.delete(article);
                 }
             }
         });
 
-
-        /*if(article.isSaved()){
-            Log.d(this.getClass().getName(), "Article saved : " + article.getTitle());
-            save_button.setText(R.string.saved_text);
-        }*/
 
         return convertView;
     }

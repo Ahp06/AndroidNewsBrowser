@@ -2,6 +2,7 @@ package fr.uha.ensisa.huynhphuc.mynews;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,11 +22,7 @@ public class SavedArticlesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_articles);
 
-        saved_articles = new ArrayList<Article>();
-        if(this.getIntent().hasExtra("saved")){
-            Bundle bundle = getIntent().getExtras();
-            saved_articles.addAll(bundle.<Article>getParcelableArrayList("saved"));
-        }
+        this.saved_articles = DataHolder.getSavedArticles();
 
         final ListView listView = (ListView) findViewById(R.id.savedList);
         SavedArticlesAdapter adapter = new SavedArticlesAdapter(this,saved_articles);
@@ -43,27 +40,12 @@ public class SavedArticlesActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Return all saved articles from original list
-     * @return
-     */
-    public ArrayList<Article> getSavedArticles(){
-        ArrayList<Article> saved = new ArrayList<Article>();
-        for(Article article : this.saved_articles){
-            if(article.isSaved()){
-                saved.add(article);
-            }
-        }
-        return saved;
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             Intent intent = new Intent(this,MainActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("saved", getSavedArticles());
-            intent.putExtras(bundle);
+            DataHolder.getSavedArticles().removeAll(DataHolder.getToDelete());
+            DataHolder.getToDelete().clear();
             startActivity(intent);
         }
         return super.onKeyDown(keyCode, event);

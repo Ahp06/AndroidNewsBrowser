@@ -1,7 +1,9 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,12 +75,14 @@ public class SavedArticlesAdapter extends ArrayAdapter<Article> {
         delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (article.isSaved()) {
+                if (DataHolder.isSaved(article)){
                     delete_button.setText(R.string.cancel_delete_text);
-                    article.delete();
+                    DataHolder.addToDelete(article);
+                    Log.d("Log del","to delete = " + DataHolder.getToDelete());
                 } else {
                     delete_button.setText(R.string.delete_text);
-                    article.save();
+                    DataHolder.removeToDelete(article);
+                    Log.d(this.getClass().getName(),"to delete = " + DataHolder.getToDelete());
                 }
             }
         });

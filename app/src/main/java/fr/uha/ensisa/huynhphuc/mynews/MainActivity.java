@@ -32,12 +32,8 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private EditText query;
-    private Settings settings;
-    private ArrayList<Article> savedArticles;
 
     public class ArticleHttpRequest extends AsyncTask<String,Integer,String> {
-
-        private ArrayList<Article> articlesList = new ArrayList<Article>();
 
         @Override
         protected String doInBackground(String... urls) {
@@ -65,11 +61,7 @@ public class MainActivity extends AppCompatActivity {
         public void onPostExecute(String msg){
             final EditText editText = (EditText) findViewById(R.id.query);
             Intent intent = new Intent(editText.getContext(),ArticlesListActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("data", articlesList);
-            intent.putExtras(bundle);
             startActivity(intent);
-
             editText.getText().clear();
         }
 
@@ -103,11 +95,13 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject response = new JSONObject(result);
                 JSONArray articles = response.optJSONArray("articles");
 
+                ArrayList<Article> articlesList = new ArrayList<Article>();
                 for(int i = 0 ; i < articles.length() ; i++){
                     Article article = new Article(articles.optJSONObject(i));
                     articlesList.add(article);
-                    //Log.i("Articles"+i ,article.toString());
                 }
+
+                DataHolder.setArticlesList(articlesList);
 
 
             } catch (JSONException e) {
@@ -127,18 +121,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         if(item.getItemId() == R.id.settings_item){
             Intent intent = new Intent(this,SettingsActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("settings", settings);
-            intent.putExtras(bundle);
             startActivity(intent);
         }
 
         if(item.getItemId() == R.id.saved_item){
             Intent intent = new Intent(this,SavedArticlesActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelableArrayList("saved", savedArticles);
-            Log.d(this.getClass().getName(),"saved articles = "+ this.savedArticles.toString());
-            intent.putExtras(bundle);
             startActivity(intent);
         }
 
@@ -151,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void executeQueryWithSettings(){
         String query = this.query.getText().toString();
-        Log.d("Full query = ", settings.applySettings(query));
-        new ArticleHttpRequest().execute(settings.applySettings(query));
+        Log.d("Full query = ", DataHolder.getSettings().applySettings(query));
+        new ArticleHttpRequest().execute(DataHolder.getSettings().applySettings(query));
     }
 
     @Override
@@ -160,12 +147,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //If settings have already been defined we recover them
-        //otherwise we instantiate them
-        if(this.getIntent().hasExtra("settings")){
-            Bundle bundle = this.getIntent().getExtras();
-            this.settings = bundle.getParcelable("settings");
-        }else {
+
+        if(DataHolder.getSettings() == null){
             Calendar current = Calendar.getInstance();
             int current_year = current.get(Calendar.YEAR);
             int current_day = current.get(Calendar.DAY_OF_MONTH);
@@ -182,17 +165,7 @@ public class MainActivity extends AppCompatActivity {
             String from  = before_year + "-" + (before_month+1) + "-" + before_day;
 
             //default settings
-            this.settings = new Settings("fr","20","publishedAt",from,to);
-        }
-
-        //We instantiate the saved articles if this has never been done
-        if(savedArticles == null){
-            this.savedArticles = new ArrayList<Article>();
-        }
-        //Otherwise we recover the extra "saved" thrown by the ArticleListActivity/SavedArticlesActivity
-        if(this.getIntent().hasExtra("saved")){
-            Bundle bundle = this.getIntent().getExtras();
-            this.savedArticles.addAll(bundle.<Article>getParcelableArrayList("saved"));
+            DataHolder.updateSettings(new Settings("fr","20","publishedAt",from,to));
         }
 
         //we execute the search if the user presses confirm with the keyboard
