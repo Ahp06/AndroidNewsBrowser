@@ -50,8 +50,8 @@ public class SettingsActivity extends AppCompatActivity {
         try {
             this.from_fragment = new DatePickerFragment(this, "from", this.settings.getFrom());
             this.to_fragment  = new DatePickerFragment(this, "to", this.settings.getTo());
-            this.from_date_choosen.setText("Du " + this.settings.getFrom());
-            this.to_date_choosen.setText("Au " + this.settings.getTo());
+            this.from_date_choosen.setText(this.settings.getFrom());
+            this.to_date_choosen.setText(this.settings.getTo());
         } catch (ParseException e) {
             e.printStackTrace();
         }

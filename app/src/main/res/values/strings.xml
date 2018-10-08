@@ -132,5 +132,6 @@
     <string name="saved_text">Sauvegardé</string>
     <string name="unknow_author">Inconnu</string>
     <string name="cancel_delete_text">Annuler la suppression</string>
+    <string name="exit_application">Cliquer encore pour quitter l\'application</string>
 
 </resources>

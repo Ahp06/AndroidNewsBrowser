@@ -3,6 +3,7 @@ package fr.uha.ensisa.huynhphuc.mynews;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +34,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private EditText query;
+    private boolean backPressedTwice = false;
 
     public class ArticleHttpRequest extends AsyncTask<String,Integer,String> {
 
@@ -189,7 +192,25 @@ public class MainActivity extends AppCompatActivity {
                 executeQueryWithSettings();
             }
         });
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (this.backPressedTwice) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.backPressedTwice = true;
+        Toast.makeText(this, R.string.exit_application, Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                backPressedTwice = false;
+            }
+        }, 2000);
 
     }
 }
