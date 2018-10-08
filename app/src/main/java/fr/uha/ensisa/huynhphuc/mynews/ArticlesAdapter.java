@@ -1,6 +1,7 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,12 +69,17 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
 
         contentView.setText(Html.fromHtml(content));
 
-
         final Button save_button = (Button) convertView.findViewById(R.id.save_button);
+
+        if(DataHolder.isSaved(article,DataHolder.MAIN_ACTIVITY)){
+            save_button.setText(R.string.saved_text);
+        }
+
+
         save_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!DataHolder.isSaved(article)) {
+                if (!DataHolder.isSaved(article,DataHolder.MAIN_ACTIVITY)) {
                     save_button.setText(R.string.saved_text);
                     DataHolder.getSavedArticles().add(article);
                 } else {

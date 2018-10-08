@@ -1,8 +1,13 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class DataHolder {
+
+    public final static int MAIN_ACTIVITY = 0;
+    public final static int SAVED_ACTIVITY = 1;
 
     private static ArrayList<Article> articlesList = new ArrayList<Article>();
     private static ArrayList<Article> savedArticles = new ArrayList<Article>();
@@ -25,14 +30,41 @@ public class DataHolder {
         DataHolder.savedArticles.add(article);
     }
 
-    public static boolean isSaved(Article article){
-        return savedArticles.contains(article) && !toDelete.contains(article);
+    public static boolean isSaved(Article article, int activity){
+        boolean isSaved = false;
+        for(Article a : savedArticles){
+            if(compare(a,article)) {
+                isSaved = true;
+            }
+        }
+
+        boolean inToDeleteList = false;
+        if(activity == DataHolder.SAVED_ACTIVITY){
+            for(Article a : toDelete ){
+                if(compare(a,article)) {
+                    inToDeleteList = true;
+                }
+            }
+        }
+
+        Log.d("DataHolder ", article.getTitle() + "is saved : " + isSaved);
+        return activity == DataHolder.SAVED_ACTIVITY ? (isSaved && !inToDeleteList): isSaved;
     }
+
+    public static boolean compare(Article a1, Article a2){
+        return
+                a1.getTitle().equals(a2.getTitle())
+                && a1.getAuthor().equals(a2.getAuthor())
+                && a1.getDescription().equals(a2.getDescription())
+                && a1.getUrl().equals(a2.getUrl())
+                && a1.getUrlToImage().equals(a2.getUrlToImage());
+    }
+
 
     public static int getIndex(Article article, ArrayList<Article> list){
         int index = 0;
         for(Article art : list){
-            if(art.equals(article)){
+            if(compare(art,article)){
                 return index;
             }
             index ++;

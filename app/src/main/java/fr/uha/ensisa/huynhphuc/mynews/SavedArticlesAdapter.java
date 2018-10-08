@@ -75,7 +75,7 @@ public class SavedArticlesAdapter extends ArrayAdapter<Article> {
         delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (DataHolder.isSaved(article)){
+                if (DataHolder.isSaved(article,DataHolder.SAVED_ACTIVITY)){
                     delete_button.setText(R.string.cancel_delete_text);
                     DataHolder.addToDelete(article);
                     Log.d("Log del","to delete = " + DataHolder.getToDelete());
