@@ -1,7 +1,11 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,27 +24,67 @@ import java.util.Date;
 
 public class ArticlesAdapter extends ArrayAdapter<Article> {
 
-    public ArticlesAdapter(Context context, ArrayList<Article> articles){
+    public ArticlesAdapter(Context context, ArrayList<Article> articles) {
         super(context, 0, articles);
+    }
+
+    static class ViewHolder {
+        private TextView contentView;
+        private ImageView imageView;
+        private Button save_button;
+        private Button comment_button;
+        int position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        final ViewHolder holder;
         final Article article = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_list, parent, false);
+            holder = new ViewHolder();
+            holder.contentView = (TextView) convertView.findViewById(R.id.articleContent);
+            holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
+            holder.save_button = (Button) convertView.findViewById(R.id.save_button);
+            holder.comment_button = (Button) convertView.findViewById(R.id.comment_button);
+            holder.position = position;
+
+            holder.save_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!DataHolder.isSaved(article, DataHolder.LIST_ACTIVITY)) {
+                        holder.save_button.setTag(article.getUrl());
+                        DataHolder.getSavedArticles().add(article);
+                    } else {
+                        DataHolder.delete(article);
+                    }
+                }
+            });
+
+            holder.comment_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), CommentActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("article", article);
+                    getContext().startActivity(intent);
+                }
+            });
+
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        TextView contentView = (TextView) convertView.findViewById(R.id.articleContent);
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
-
-        ArticleImageDownload imgDownloader = new ArticleImageDownload(imageView);
-        if(!article.getUrlToImage().equals(null)){
+        //Image downloading
+        ArticleImageDownload imgDownloader = new ArticleImageDownload(holder.imageView);
+        if (!article.getUrlToImage().equals(null)) {
             imgDownloader.execute(article.getUrlToImage());
         }
 
+        //Date parsing
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date date = null;
         try {
@@ -52,8 +96,9 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
         DateFormat outputFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateFormatted = outputFormatter.format(date);
 
+        //Set content into article item
         String author;
-        if(!article.getAuthor().equals(null)){
+        if (!article.getAuthor().equals(null)) {
             author = article.getAuthor();
         } else {
             author = getContext().getString(R.string.unknow_author);
@@ -67,28 +112,13 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
                         "</br>" +
                         "<p> écrit le : " + dateFormatted + "</p>";
 
-        contentView.setText(Html.fromHtml(content));
+        holder.contentView.setText(Html.fromHtml(content));
 
-        final Button save_button = (Button) convertView.findViewById(R.id.save_button);
-
-        if(DataHolder.isSaved(article,DataHolder.MAIN_ACTIVITY)){
-            save_button.setText(R.string.saved_text);
+        if (DataHolder.isSaved(article,DataHolder.LIST_ACTIVITY)) {
+            holder.save_button.setText(R.string.saved_text);
+        } else {
+            holder.save_button.setText(R.string.save_text);
         }
-
-
-        save_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!DataHolder.isSaved(article,DataHolder.MAIN_ACTIVITY)) {
-                    save_button.setText(R.string.saved_text);
-                    DataHolder.getSavedArticles().add(article);
-                } else {
-                    save_button.setText(R.string.save_text);
-                    DataHolder.delete(article);
-                }
-            }
-        });
-
 
         return convertView;
     }

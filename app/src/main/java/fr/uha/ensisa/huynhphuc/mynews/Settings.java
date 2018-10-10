@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Settings implements Parcelable {
+public class Settings {
 
     private final static String BASE_URL = "https://newsapi.org/v2/everything?";
     private final static String API_KEY = BuildConfig.ApiKey;
@@ -68,40 +68,6 @@ public class Settings implements Parcelable {
 
     public void setTo(String to) {
         this.to = to;
-    }
-
-    public static final Creator<Settings> CREATOR = new Creator<Settings>() {
-        @Override
-        public Settings createFromParcel(Parcel in) {
-            return new Settings(in);
-        }
-
-        @Override
-        public Settings[] newArray(int size) {
-            return new Settings[size];
-        }
-    };
-
-    public Settings(Parcel in) {
-        this.language = in.readString();
-        this.pageSize = in.readString();
-        this.sortBy = in.readString();
-        this.from = in.readString();
-        this.to = in.readString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(language);
-        dest.writeString(pageSize);
-        dest.writeString(sortBy);
-        dest.writeString(from);
-        dest.writeString(to);
     }
 
     public String applySettings(String query){

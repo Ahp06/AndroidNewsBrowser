@@ -118,7 +118,7 @@
     <string name="valid_button">Valider</string>
     <string name="sortBy_text">Trier par :</string>
     <string name="save_text">Sauvegarder</string>
-    <string name="comment_text">Commenter</string>
+    <string name="comment_text">Laisser un avis</string>
     <string name="from_text">Du</string>
     <string name="to_text">Au</string>
     <string name="pick_date">Date de début</string>
@@ -133,5 +133,9 @@
     <string name="unknow_author">Inconnu</string>
     <string name="cancel_delete_text">Annuler la suppression</string>
     <string name="exit_application">Cliquer encore pour quitter l\'application</string>
+    <string name="seeComment_text">Avis</string>
+    <string name="title_activity_comment">CommentActivity</string>
+    <string name="valid_text">Valider</string>
+    <string name="cancel_text">Annuler</string>
 
 </resources>
