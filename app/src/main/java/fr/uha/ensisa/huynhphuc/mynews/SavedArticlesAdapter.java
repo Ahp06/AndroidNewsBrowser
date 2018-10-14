@@ -1,6 +1,8 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Html;
 import android.util.Log;
@@ -86,6 +88,24 @@ public class SavedArticlesAdapter extends ArrayAdapter<Article> {
                 }
             }
         });
+
+        final Button comment_button = (Button) convertView.findViewById(R.id.saved_comment_button);
+        comment_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), CommentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("article", article);
+                intent.putExtras(bundle);
+                getContext().startActivity(intent);
+            }
+        });
+
+        if (DataHolder.isCommented(article)) {
+           comment_button.setText(R.string.see_comment);
+        } else {
+            comment_button.setText(R.string.comment_text);
+        }
 
         return convertView;
     }

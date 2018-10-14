@@ -74,6 +74,7 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
                 Intent intent = new Intent(getContext(), CommentActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("article", article);
+                intent.putExtras(bundle);
                 getContext().startActivity(intent);
             }
         });
@@ -118,6 +119,12 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
             holder.save_button.setText(R.string.saved_text);
         } else {
             holder.save_button.setText(R.string.save_text);
+        }
+
+        if (DataHolder.isCommented(article)) {
+            holder.comment_button.setText(R.string.see_comment);
+        } else {
+            holder.comment_button.setText(R.string.comment_text);
         }
 
         return convertView;

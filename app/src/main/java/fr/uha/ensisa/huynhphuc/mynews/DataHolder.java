@@ -33,7 +33,7 @@ public class DataHolder {
         boolean isSaved = false;
         for (Article a : savedArticles) {
             if (compare(article, a)) {
-                isSaved = true; //Return ? Pour casser la boucle ? 2 isSaved ?
+                isSaved = true;
             }
         }
 
@@ -115,6 +115,17 @@ public class DataHolder {
         }
 
         return null;
+    }
+
+    public static boolean isCommented(Article article){
+        boolean isCommented = false;
+        for(Comment comment : comments){
+            if(compare(article,comment.getArticle())){
+                isCommented = true;
+            }
+        }
+
+        return isCommented;
     }
 
 

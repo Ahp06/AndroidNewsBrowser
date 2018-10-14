@@ -3,6 +3,7 @@ package fr.uha.ensisa.huynhphuc.mynews;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,7 @@ public class CommentActivity extends Activity {
                     String content = comment_text.getText().toString();
                     comment.setComment(content);
                     DataHolder.addComment(comment);
+                    DataHolder.save(article);
                 }
                 finish(); //Go back to previous activity
 
