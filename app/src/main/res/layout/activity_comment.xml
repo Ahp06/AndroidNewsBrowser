@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".CommentActivity">
 
-    <TextView
+    <EditText
         android:id="@+id/comment"
         android:layout_width="327dp"
         android:layout_height="73dp"
