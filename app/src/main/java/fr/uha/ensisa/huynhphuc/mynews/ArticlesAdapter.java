@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -50,33 +51,32 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
             holder.save_button = (Button) convertView.findViewById(R.id.save_button);
             holder.comment_button = (Button) convertView.findViewById(R.id.comment_button);
             holder.position = position;
-
-            holder.save_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!DataHolder.isSaved(article, DataHolder.LIST_ACTIVITY)) {
-                        holder.save_button.setTag(article.getUrl());
-                        DataHolder.getSavedArticles().add(article);
-                    } else {
-                        DataHolder.delete(article);
-                    }
-                }
-            });
-
-            holder.comment_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), CommentActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("article", article);
-                    getContext().startActivity(intent);
-                }
-            });
-
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+        holder.save_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!DataHolder.isSaved(article, DataHolder.LIST_ACTIVITY)) {
+                    DataHolder.getSavedArticles().add(article);
+                } else {
+                    DataHolder.delete(article);
+                }
+                notifyDataSetChanged();
+            }
+        });
+
+        holder.comment_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), CommentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("article", article);
+                getContext().startActivity(intent);
+            }
+        });
 
         //Image downloading
         ArticleImageDownload imgDownloader = new ArticleImageDownload(holder.imageView);
