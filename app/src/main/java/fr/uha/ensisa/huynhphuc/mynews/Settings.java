@@ -14,6 +14,7 @@ public class Settings {
 
     private final static String BASE_URL = "https://newsapi.org/v2/everything?";
     private final static String API_KEY = BuildConfig.ApiKey;
+    private String queryWithSettings;
 
     private String language;
     private String pageSize;
@@ -70,6 +71,7 @@ public class Settings {
         this.to = to;
     }
 
+
     public String applySettings(String query){
 
         StringBuilder queryWithSettings = new StringBuilder();
@@ -82,7 +84,12 @@ public class Settings {
         queryWithSettings.append("pageSize=" + pageSize);
         queryWithSettings.append("&");
 
-        queryWithSettings.append("sortBy=" + sortBy);
+        String sortMethod = "publishedAt";
+        if(sortBy.equals("Popularité")) sortMethod ="popularity";
+        if(sortBy.equals("Pertinence")) sortMethod ="relevancy";
+        if(sortBy.equals("Date")) sortMethod ="publishedAt";
+
+        queryWithSettings.append("sortBy=" + sortMethod);
         queryWithSettings.append("&");
 
         if(from != ""){
@@ -101,4 +108,14 @@ public class Settings {
         return queryWithSettings.toString();
     }
 
+    @Override
+    public String toString() {
+        return "Settings{" +
+                "language='" + language + '\'' +
+                ", pageSize='" + pageSize + '\'' +
+                ", sortBy='" + sortBy + '\'' +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                '}';
+    }
 }

@@ -12,6 +12,7 @@ public class DataHolder {
     private static ArrayList<Article> savedArticles = new ArrayList<Article>();
     private static ArrayList<Article> toDelete = new ArrayList<Article>();
     private static ArrayList<Comment> comments = new ArrayList<Comment>();
+    private static ArrayList<String> history = new ArrayList<String>();
     private static Settings settings;
 
     public static ArrayList<Article> getArticlesList() {
@@ -129,9 +130,31 @@ public class DataHolder {
         return isCommented;
     }
 
-    //Doublon si sauvegardé puis commenté à traiter
-    //+ ajouter la suppresion des commentaires (bouton)
-    //Si on enleve un articles des sauvegardés, les commentaires persistent ?
-    //Pas de menu bar dans comment activity
+    public static ArrayList<Comment> getComments(){
+        return comments;
+    }
 
+    public static void addIntoHistory(String query) {
+        history.add(query);
+    }
+
+    public static ArrayList<String> getHistory(){
+        return history;
+    }
+
+    public static void setSavedArticles(ArrayList<Article> savedArticles) {
+        DataHolder.savedArticles = savedArticles;
+    }
+
+    public static void setComments(ArrayList<Comment> comments) {
+        DataHolder.comments = comments;
+    }
+
+    public static void setHistory(ArrayList<String> history) {
+        DataHolder.history = history;
+    }
+
+    public static void setSettings(Settings settings) {
+        DataHolder.settings = settings;
+    }
 }

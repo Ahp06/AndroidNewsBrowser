@@ -49,7 +49,7 @@ public class ArticleImageDownload extends AsyncTask<String, Void, Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
         if (result != null) {
-            ArticleImageDownload articleImageDownload = getArticleImageDownload(imageView);
+            ArticleImageDownload articleImageDownload = getAsyncTask(imageView);
             //If this is equal to the downloader reference of this image View
             if (this == articleImageDownload) {
                 imageView.setImageBitmap(result);
@@ -62,7 +62,7 @@ public class ArticleImageDownload extends AsyncTask<String, Void, Bitmap> {
     }
 
     public boolean cancelDownload(String url, ImageView imageView) {
-        ArticleImageDownload articleImageDownload = this.getArticleImageDownload(imageView);
+        ArticleImageDownload articleImageDownload = this.getAsyncTask(imageView);
 
         if (articleImageDownload != null) {
             String bitmapUrl = articleImageDownload.getUrl();
@@ -76,7 +76,7 @@ public class ArticleImageDownload extends AsyncTask<String, Void, Bitmap> {
         return true;
     }
 
-    public ArticleImageDownload getArticleImageDownload(ImageView imageView) {
+    public ArticleImageDownload getAsyncTask(ImageView imageView) {
         if (imageView != null) {
             Drawable drawable = imageView.getDrawable();
             if (drawable instanceof ArticleImageDownload.LoadingDrawable) {

@@ -33,9 +33,9 @@
     </string-array>
 
     <string-array name="sortBy_array">
-        <item name="relevancy">relevancy</item>
-        <item name="popularity">popularity</item>
-        <item name="publishedAt">publishedAt</item>
+        <item name="relevancy">Pertinence</item>
+        <item name="popularity">Popularité</item>
+        <item name="publishedAt">Date</item>
     </string-array>
 
 
@@ -139,5 +139,8 @@
     <string name="cancel_text">Annuler</string>
     <string name="see_comment">Voir mon avis</string>
     <string name="delete_comment_text">Commentaire supprimé</string>
+    <string name="empty_query">Aucun mot-clé renseigné</string>
+    <string name="info">Développé par HUYNH-PHUC Axel</string>
+    <string name="incorrect_date_choice">Choix des dates incorrect</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -37,8 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         this.settings = DataHolder.getSettings();
 
-        Log.d("settings from", "=" + settings.getFrom());
-        Log.d("settings to", "=" + settings.getTo());
+        Log.d("SettingsActivity", " Settings =" + this.settings.toString());
 
 
         this.language_spinner = (Spinner) findViewById(R.id.language_spinner);
@@ -100,7 +100,7 @@ public class SettingsActivity extends AppCompatActivity {
                         DataHolder.updateSettings(settings);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(SettingsActivity.this, "Choix des dates incorrect", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SettingsActivity.this, R.string.incorrect_date_choice, Toast.LENGTH_SHORT).show();
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();

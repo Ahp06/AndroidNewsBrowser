@@ -1,9 +1,11 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,6 +19,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +30,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText query;
     private boolean backPressedTwice = false;
 
-    public class ArticleHttpRequest extends AsyncTask<String,Integer,String> {
+    public class ArticleHttpRequest extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... urls) {
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     this.parseJSON(response);
                     return result;
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -61,9 +67,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onPostExecute(String msg){
+        public void onPostExecute(String msg) {
             final EditText editText = (EditText) findViewById(R.id.query);
-            Intent intent = new Intent(editText.getContext(),ArticlesListActivity.class);
+            Intent intent = new Intent(editText.getContext(), ArticlesListActivity.class);
             startActivity(intent);
             editText.getText().clear();
         }
@@ -99,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONArray articles = response.optJSONArray("articles");
 
                 ArrayList<Article> articlesList = new ArrayList<Article>();
-                for(int i = 0 ; i < articles.length() ; i++){
+                for (int i = 0; i < articles.length(); i++) {
                     Article article = new Article(articles.optJSONObject(i));
                     articlesList.add(article);
                 }
@@ -114,50 +120,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        MenuInflater inflater = this.getMenuInflater();
-        inflater.inflate(R.menu.settings_menu,menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if(item.getItemId() == R.id.settings_item){
-            Intent intent = new Intent(this,SettingsActivity.class);
-            startActivity(intent);
-        }
-
-        if(item.getItemId() == R.id.saved_item){
-            Intent intent = new Intent(this,SavedArticlesActivity.class);
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /***
-     *
-     * Execute the query with all settings by launching an ArticleHttpRequest AsyncTask
-     */
-    public void executeQueryWithSettings(){
-        String query = this.query.getText().toString();
-        Log.d("Full query = ", DataHolder.getSettings().applySettings(query));
-        new ArticleHttpRequest().execute(DataHolder.getSettings().applySettings(query));
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        if(DataHolder.getSettings() == null){
+        this.loadData();
+        if (DataHolder.getSettings() == null) {
             Calendar current = Calendar.getInstance();
             int current_year = current.get(Calendar.YEAR);
             int current_day = current.get(Calendar.DAY_OF_MONTH);
             int current_month = current.get(Calendar.MONTH);
             //Current date
-            String to = current_year + "-" + (current_month+1) + "-" + current_day;
+            String to = current_year + "-" + (current_month + 1) + "-" + current_day;
 
             Calendar before = current;
             before.add(Calendar.DAY_OF_WEEK, -7); // 7 days before today
@@ -165,10 +139,10 @@ public class MainActivity extends AppCompatActivity {
             int before_day = before.get(Calendar.DAY_OF_MONTH);
             int before_month = before.get(Calendar.MONTH);
 
-            String from  = before_year + "-" + (before_month+1) + "-" + before_day;
+            String from = before_year + "-" + (before_month + 1) + "-" + before_day;
 
             //default settings
-            DataHolder.updateSettings(new Settings("fr","20","publishedAt",from,to));
+            DataHolder.updateSettings(new Settings("fr", "20", "Date", from, to));
         }
 
         //we execute the search if the user presses confirm with the keyboard
@@ -195,6 +169,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = this.getMenuInflater();
+        inflater.inflate(R.menu.settings_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.settings_item) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
+
+        if (item.getItemId() == R.id.saved_item) {
+            Intent intent = new Intent(this, SavedArticlesActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /***
+     *
+     * Execute the query with all settings by launching an ArticleHttpRequest AsyncTask
+     */
+    public void executeQueryWithSettings() {
+        if (!this.query.getText().toString().equals("")) {
+            String query = this.query.getText().toString();
+            Log.d("query", "=" + query);
+            Log.d("Full query = ", DataHolder.getSettings().applySettings(query));
+            new ArticleHttpRequest().execute(DataHolder.getSettings().applySettings(query));
+            DataHolder.addIntoHistory(query);
+        } else {
+            Toast.makeText(this, R.string.empty_query, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         if (this.backPressedTwice) {
             super.onBackPressed();
@@ -203,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
 
         this.backPressedTwice = true;
         Toast.makeText(this, R.string.exit_application, Toast.LENGTH_SHORT).show();
-
         new Handler().postDelayed(new Runnable() {
 
             @Override
@@ -211,6 +222,55 @@ public class MainActivity extends AppCompatActivity {
                 backPressedTwice = false;
             }
         }, 2000);
+    }
 
+    public void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        Gson gson = new Gson();
+        String commentsJson = gson.toJson(DataHolder.getComments());
+        String savedJson = gson.toJson(DataHolder.getSavedArticles());
+        String settingsJson = gson.toJson(DataHolder.getSettings());
+        String historyJson = gson.toJson(DataHolder.getHistory());
+
+        editor.putString("comments", commentsJson);
+        editor.putString("saved", savedJson);
+        editor.putString("settings", settingsJson);
+        editor.putString("history", historyJson);
+
+        editor.apply();
+    }
+
+    public void loadData(){
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+
+        String commentsJson = sharedPreferences.getString("comments",null);
+        String savedJson = sharedPreferences.getString("saved",null);
+        String settingsJson = sharedPreferences.getString("settings",null);
+        String historyJson = sharedPreferences.getString("history",null);
+
+        Type commentsType = new TypeToken<ArrayList<Comment>>(){}.getType();
+        Type articlesType = new TypeToken<ArrayList<Article>>(){}.getType();
+        Type settingsType = new TypeToken<Settings>(){}.getType();
+        Type historyType = new TypeToken<ArrayList<String>>(){}.getType();
+
+        ArrayList<Comment> comments = gson.fromJson(commentsJson,commentsType);
+        ArrayList<Article> saved = gson.fromJson(savedJson,articlesType);
+        Settings settings = gson.fromJson(settingsJson,settingsType);
+        ArrayList<String> history = gson.fromJson(historyJson,historyType);
+
+        if(comments != null) DataHolder.setComments(comments);
+        if(saved != null) DataHolder.setSavedArticles(saved);
+        if(settings != null) DataHolder.setSettings(settings);
+        if(history != null) DataHolder.setHistory(history);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        this.saveData();
+        super.onDestroy();
     }
 }

@@ -36,7 +36,7 @@ public class ArticlesListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
 
         if(item.getItemId() == R.id.refresh_item){
-            //refresh list with previous query
+            adapter.notifyDataSetChanged();
         }
         return super.onOptionsItemSelected(item);
     }
