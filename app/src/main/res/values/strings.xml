@@ -138,5 +138,6 @@
     <string name="valid_text">Valider</string>
     <string name="cancel_text">Annuler</string>
     <string name="see_comment">Voir mon avis</string>
+    <string name="delete_comment_text">Commentaire supprimé</string>
 
 </resources>

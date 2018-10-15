@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class CommentActivity extends Activity {
 
@@ -22,6 +23,7 @@ public class CommentActivity extends Activity {
         final TextView comment_text = (TextView) this.findViewById(R.id.comment);
         final Button cancel_button = (Button) this.findViewById(R.id.cancel_comment);
         final Button valid_button = (Button) this.findViewById(R.id.valid_comment);
+        final Button delete_comment = (Button) this.findViewById(R.id.delete_comment);
 
         if (this.getIntent().hasExtra("article")) {
             this.article = (Article) this.getIntent().getParcelableExtra("article");
@@ -42,7 +44,9 @@ public class CommentActivity extends Activity {
                     String content = comment_text.getText().toString();
                     comment.setComment(content);
                     DataHolder.addComment(comment);
-                    DataHolder.save(article);
+                    if(!DataHolder.isSaved(article,DataHolder.LIST_ACTIVITY)){
+                        DataHolder.save(article);
+                    }
                 }
                 finish(); //Go back to previous activity
 
@@ -52,6 +56,15 @@ public class CommentActivity extends Activity {
         cancel_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
+            }
+        });
+
+        delete_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataHolder.deleteComment(comment);
+                Toast.makeText(v.getContext(),R.string.delete_comment_text, Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

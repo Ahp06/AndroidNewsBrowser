@@ -99,7 +99,7 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
 
         //Set content into article item
         String author;
-        if (!article.getAuthor().equals(null)) {
+        if(article.getUrlToImage() != "null"){
             author = article.getAuthor();
         } else {
             author = getContext().getString(R.string.unknow_author);
