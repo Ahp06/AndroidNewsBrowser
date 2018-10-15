@@ -65,7 +65,8 @@ public class CommentActivity extends Activity {
             public void onClick(View v) {
                 DataHolder.deleteComment(comment);
                 Toast.makeText(v.getContext(),R.string.delete_comment_text, Toast.LENGTH_SHORT).show();
-                finish();
+                Intent intent = new Intent(v.getContext(),ArticlesListActivity.class);
+                startActivityForResult(intent, DataHolder.COMMENT_DELETED);
             }
         });
 

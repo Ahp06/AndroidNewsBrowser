@@ -2,6 +2,7 @@ package fr.uha.ensisa.huynhphuc.mynews;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
@@ -80,10 +81,9 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
         });
 
         //Image downloading
-        ArticleImageDownload imgDownloader = new ArticleImageDownload(holder.imageView);
-        if (!article.getUrlToImage().equals(null)) {
-            imgDownloader.execute(article.getUrlToImage());
-        }
+        ArticleImageDownload downloader = new ArticleImageDownload(holder.imageView);
+        downloader.download(article.getUrlToImage());
+
 
         //Date parsing
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -129,4 +129,5 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
 
         return convertView;
     }
+
 }

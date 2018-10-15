@@ -6,11 +6,11 @@ public class DataHolder {
 
     public final static int LIST_ACTIVITY = 0;
     public final static int SAVED_ACTIVITY = 1;
+    public static final int COMMENT_DELETED = 2;
 
     private static ArrayList<Article> articlesList = new ArrayList<Article>();
     private static ArrayList<Article> savedArticles = new ArrayList<Article>();
     private static ArrayList<Article> toDelete = new ArrayList<Article>();
-    private static ArrayList<Article> commentedArticles = new ArrayList<Article>();
     private static ArrayList<Comment> comments = new ArrayList<Comment>();
     private static Settings settings;
 

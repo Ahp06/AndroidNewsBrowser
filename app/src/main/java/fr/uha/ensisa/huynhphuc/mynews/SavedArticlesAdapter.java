@@ -40,10 +40,8 @@ public class SavedArticlesAdapter extends ArrayAdapter<Article> {
         TextView contentView = (TextView) convertView.findViewById(R.id.articleContent_saved);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView_saved);
 
-        ArticleImageDownload imgDownloader = new ArticleImageDownload(imageView);
-        if(!article.getUrlToImage().equals(null)){
-            imgDownloader.execute(article.getUrlToImage());
-        }
+        ArticleImageDownload downloader = new ArticleImageDownload(imageView);
+        downloader.download(article.getUrlToImage());
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         Date date = null;

@@ -1,32 +1,44 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.text.Html;
 import android.util.Log;
 import android.widget.ImageView;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.lang.ref.WeakReference;
 
 public class ArticleImageDownload extends AsyncTask<String, Void, Bitmap> {
 
     private ImageView imageView;
+    private String url;
+
+    static class LoadingDrawable extends ColorDrawable {
+        private final WeakReference<ArticleImageDownload> articleImageDownloadWeakReference;
+
+        public LoadingDrawable(ArticleImageDownload articleImageDownload) {
+            super(R.drawable.ic_library_books_black_24dp);
+            articleImageDownloadWeakReference =
+                    new WeakReference<ArticleImageDownload>(articleImageDownload);
+        }
+
+        public ArticleImageDownload getArticleImageDownload() {
+            return articleImageDownloadWeakReference.get();
+        }
+    }
 
     public ArticleImageDownload(ImageView imageView) {
         this.imageView = imageView;
     }
 
     protected Bitmap doInBackground(String... urls) {
-        String urldisplay = urls[0];
+        this.url = urls[0];
         Bitmap bitmap = null;
         try {
-            InputStream in = new java.net.URL(urldisplay).openStream();
+            InputStream in = new java.net.URL(url).openStream();
             bitmap = BitmapFactory.decodeStream(in);
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
@@ -36,6 +48,53 @@ public class ArticleImageDownload extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        if(result != null) this.imageView.setImageBitmap(result);
+        if (result != null) {
+            ArticleImageDownload articleImageDownload = getArticleImageDownload(imageView);
+            //If this is equal to the downloader reference of this image View
+            if (this == articleImageDownload) {
+                imageView.setImageBitmap(result);
+            }
+        }
     }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public boolean cancelDownload(String url, ImageView imageView) {
+        ArticleImageDownload articleImageDownload = this.getArticleImageDownload(imageView);
+
+        if (articleImageDownload != null) {
+            String bitmapUrl = articleImageDownload.getUrl();
+            if ((bitmapUrl == null) || (!bitmapUrl.equals(url))) {
+                articleImageDownload.cancel(true);
+            } else {
+                // URL is already being downloaded
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public ArticleImageDownload getArticleImageDownload(ImageView imageView) {
+        if (imageView != null) {
+            Drawable drawable = imageView.getDrawable();
+            if (drawable instanceof ArticleImageDownload.LoadingDrawable) {
+                ArticleImageDownload.LoadingDrawable downloadedDrawable = (ArticleImageDownload.LoadingDrawable) drawable;
+                return downloadedDrawable.getArticleImageDownload();
+            }
+        }
+        return null;
+    }
+
+    public void download(String url) {
+        if (cancelDownload(url, imageView)) {
+            ArticleImageDownload task = new ArticleImageDownload(imageView);
+            LoadingDrawable downloadedDrawable = new LoadingDrawable(task);
+            imageView.setImageDrawable(downloadedDrawable);
+            task.execute(url);
+        }
+    }
+
+
 }
