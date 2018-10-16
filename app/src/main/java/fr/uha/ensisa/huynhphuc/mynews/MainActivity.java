@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -124,9 +125,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*if(!DataHolder.isDataLoaded()){
+        if(!DataHolder.isDataLoaded()){
             this.loadData();
-        }*/
+        }
 
         if (DataHolder.getSettings() == null) {
             Calendar current = Calendar.getInstance();
@@ -223,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void saveData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences (this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         Gson gson = new Gson();
@@ -237,17 +238,27 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("settings", settingsJson);
         editor.putString("history", historyJson);
 
+        Log.d("MAIN save Log", "History=" + historyJson);
+        Log.d("MAIN save Log", "Saved=" + savedJson);
+        Log.d("MAIN save Log", "Settings=" + settingsJson);
+        Log.d("MAIN save Log", "Comments=" + commentsJson);
+
         editor.apply();
     }
 
     public void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences (this);
         Gson gson = new Gson();
 
         String commentsJson = sharedPreferences.getString("comments", null);
         String savedJson = sharedPreferences.getString("saved", null);
         String settingsJson = sharedPreferences.getString("settings", null);
         String historyJson = sharedPreferences.getString("history", null);
+
+        Log.d("MAIN load Log", "History=" + historyJson);
+        Log.d("MAIN load Log", "Saved=" + savedJson);
+        Log.d("MAIN load Log", "Settings=" + settingsJson);
+        Log.d("MAIN load Log", "Comments=" + commentsJson);
 
         Type commentsType = new TypeToken<ArrayList<Comment>>() {
         }.getType();
