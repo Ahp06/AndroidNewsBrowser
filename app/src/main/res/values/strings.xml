@@ -142,5 +142,7 @@
     <string name="empty_query">Aucun mot-clé renseigné</string>
     <string name="info">Développé par HUYNH-PHUC Axel</string>
     <string name="incorrect_date_choice">Choix des dates incorrect</string>
+    <string name="empty_list">Aucun article ne correspond à votre recherche</string>
+    <string name="empty_saved_text">Aucun article sauvegardé</string>
 
 </resources>

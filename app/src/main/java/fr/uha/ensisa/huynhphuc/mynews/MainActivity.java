@@ -40,7 +40,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class MainActivity extends AppCompatActivity {
 
     private EditText query;
-    private boolean backPressedTwice = false;
+    private boolean backPressed = false;
 
     public class ArticleHttpRequest extends AsyncTask<String, Integer, String> {
 
@@ -124,7 +124,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.loadData();
+        /*if(!DataHolder.isDataLoaded()){
+            this.loadData();
+        }*/
+
         if (DataHolder.getSettings() == null) {
             Calendar current = Calendar.getInstance();
             int current_year = current.get(Calendar.YEAR);
@@ -208,20 +211,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (this.backPressedTwice) {
-            super.onBackPressed();
-            return;
+        if (this.backPressed) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, R.string.exit_application, Toast.LENGTH_SHORT).show();
+            this.backPressed = true;
         }
-
-        this.backPressedTwice = true;
-        Toast.makeText(this, R.string.exit_application, Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                backPressedTwice = false;
-            }
-        }, 2000);
     }
 
     public void saveData() {
@@ -242,30 +240,35 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public void loadData(){
+    public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
         Gson gson = new Gson();
 
-        String commentsJson = sharedPreferences.getString("comments",null);
-        String savedJson = sharedPreferences.getString("saved",null);
-        String settingsJson = sharedPreferences.getString("settings",null);
-        String historyJson = sharedPreferences.getString("history",null);
+        String commentsJson = sharedPreferences.getString("comments", null);
+        String savedJson = sharedPreferences.getString("saved", null);
+        String settingsJson = sharedPreferences.getString("settings", null);
+        String historyJson = sharedPreferences.getString("history", null);
 
-        Type commentsType = new TypeToken<ArrayList<Comment>>(){}.getType();
-        Type articlesType = new TypeToken<ArrayList<Article>>(){}.getType();
-        Type settingsType = new TypeToken<Settings>(){}.getType();
-        Type historyType = new TypeToken<ArrayList<String>>(){}.getType();
+        Type commentsType = new TypeToken<ArrayList<Comment>>() {
+        }.getType();
+        Type articlesType = new TypeToken<ArrayList<Article>>() {
+        }.getType();
+        Type settingsType = new TypeToken<Settings>() {
+        }.getType();
+        Type historyType = new TypeToken<ArrayList<String>>() {
+        }.getType();
 
-        ArrayList<Comment> comments = gson.fromJson(commentsJson,commentsType);
-        ArrayList<Article> saved = gson.fromJson(savedJson,articlesType);
-        Settings settings = gson.fromJson(settingsJson,settingsType);
-        ArrayList<String> history = gson.fromJson(historyJson,historyType);
+        ArrayList<Comment> comments = gson.fromJson(commentsJson, commentsType);
+        ArrayList<Article> saved = gson.fromJson(savedJson, articlesType);
+        Settings settings = gson.fromJson(settingsJson, settingsType);
+        ArrayList<String> history = gson.fromJson(historyJson, historyType);
 
-        if(comments != null) DataHolder.setComments(comments);
-        if(saved != null) DataHolder.setSavedArticles(saved);
-        if(settings != null) DataHolder.setSettings(settings);
-        if(history != null) DataHolder.setHistory(history);
+        if (comments != null) DataHolder.setComments(comments);
+        if (saved != null) DataHolder.setSavedArticles(saved);
+        if (settings != null) DataHolder.setSettings(settings);
+        if (history != null) DataHolder.setHistory(history);
 
+        DataHolder.setDataLoaded(true);
     }
 
     @Override
@@ -273,4 +276,6 @@ public class MainActivity extends AppCompatActivity {
         this.saveData();
         super.onDestroy();
     }
+
+
 }

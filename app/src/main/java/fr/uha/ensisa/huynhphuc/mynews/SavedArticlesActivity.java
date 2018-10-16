@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -25,8 +26,15 @@ public class SavedArticlesActivity extends AppCompatActivity {
         this.saved_articles = DataHolder.getSavedArticles();
 
         final ListView listView = (ListView) findViewById(R.id.savedList);
-        SavedArticlesAdapter adapter = new SavedArticlesAdapter(this,saved_articles);
-        listView.setAdapter(adapter);
+        if(DataHolder.getSavedArticles().isEmpty()){
+            TextView emptyText = (TextView)findViewById(R.id.empty_saved);
+            listView.setEmptyView(emptyText);
+        }else {
+            SavedArticlesAdapter adapter = new SavedArticlesAdapter(this,saved_articles);
+            listView.setAdapter(adapter);
+        }
+
+
 
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -23,7 +23,6 @@ import java.util.Date;
 public class SavedArticlesAdapter extends ArrayAdapter<Article> {
 
 
-
     public SavedArticlesAdapter(Context context, ArrayList<Article> articles) {
         super(context, 0, articles);
     }
@@ -94,6 +93,7 @@ public class SavedArticlesAdapter extends ArrayAdapter<Article> {
                 Intent intent = new Intent(getContext(), CommentActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("article", article);
+                bundle.putInt("activity", DataHolder.SAVED_ACTIVITY);
                 intent.putExtras(bundle);
                 getContext().startActivity(intent);
             }

@@ -47,8 +47,14 @@ public class ArticlesListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_articles_list);
 
         final ListView listView = (ListView) findViewById(R.id.articlesList);
-        this.adapter = new ArticlesAdapter(this, DataHolder.getArticlesList());
-        listView.setAdapter(adapter);
+        if(DataHolder.getArticlesList().isEmpty()){
+            TextView emptyText = (TextView)findViewById(R.id.empty);
+            listView.setEmptyView(emptyText);
+        }else {
+            this.adapter = new ArticlesAdapter(this, DataHolder.getArticlesList());
+            listView.setAdapter(adapter);
+        }
+
 
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

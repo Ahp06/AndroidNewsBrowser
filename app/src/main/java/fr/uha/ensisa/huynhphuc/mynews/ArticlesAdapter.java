@@ -75,6 +75,7 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
                 Intent intent = new Intent(getContext(), CommentActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("article", article);
+                bundle.putInt("activity", DataHolder.LIST_ACTIVITY);
                 intent.putExtras(bundle);
                 getContext().startActivity(intent);
             }
@@ -99,7 +100,7 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
 
         //Set content into article item
         String author;
-        if(article.getUrlToImage() != "null"){
+        if(article.getAuthor() != "null"){
             author = article.getAuthor();
         } else {
             author = getContext().getString(R.string.unknow_author);

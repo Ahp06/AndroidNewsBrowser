@@ -14,6 +14,7 @@ public class DataHolder {
     private static ArrayList<Comment> comments = new ArrayList<Comment>();
     private static ArrayList<String> history = new ArrayList<String>();
     private static Settings settings;
+    private static boolean dataLoaded = false;
 
     public static ArrayList<Article> getArticlesList() {
         return articlesList;
@@ -156,5 +157,13 @@ public class DataHolder {
 
     public static void setSettings(Settings settings) {
         DataHolder.settings = settings;
+    }
+
+    public static boolean isDataLoaded() {
+        return dataLoaded;
+    }
+
+    public static void setDataLoaded(boolean dataLoaded) {
+        dataLoaded = dataLoaded;
     }
 }
