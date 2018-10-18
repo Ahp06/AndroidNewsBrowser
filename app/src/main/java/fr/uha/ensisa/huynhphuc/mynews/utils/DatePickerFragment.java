@@ -1,11 +1,10 @@
-package fr.uha.ensisa.huynhphuc.mynews;
+package fr.uha.ensisa.huynhphuc.mynews.utils;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -13,6 +12,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import fr.uha.ensisa.huynhphuc.mynews.R;
+import fr.uha.ensisa.huynhphuc.mynews.activity.SettingsActivity;
 
 @SuppressLint("ValidFragment")
 public class DatePickerFragment extends DialogFragment

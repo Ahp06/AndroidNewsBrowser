@@ -1,11 +1,9 @@
-package fr.uha.ensisa.huynhphuc.mynews;
+package fr.uha.ensisa.huynhphuc.mynews.activity;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -16,8 +14,12 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+
+import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.utils.DatePickerFragment;
+import fr.uha.ensisa.huynhphuc.mynews.R;
+import fr.uha.ensisa.huynhphuc.mynews.database.Settings;
 
 public class SettingsActivity extends AppCompatActivity {
 

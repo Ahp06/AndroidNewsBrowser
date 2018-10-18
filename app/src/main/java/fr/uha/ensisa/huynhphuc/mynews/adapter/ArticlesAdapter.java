@@ -1,14 +1,10 @@
-package fr.uha.ensisa.huynhphuc.mynews;
+package fr.uha.ensisa.huynhphuc.mynews.adapter;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +20,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.R;
+import fr.uha.ensisa.huynhphuc.mynews.activity.CommentActivity;
+import fr.uha.ensisa.huynhphuc.mynews.database.Article;
+import fr.uha.ensisa.huynhphuc.mynews.database.NewsViewModel;
+import fr.uha.ensisa.huynhphuc.mynews.utils.ArticleImageDownload;
+
 public class ArticlesAdapter extends ArrayAdapter<Article> {
 
     public ArticlesAdapter(Context context, ArrayList<Article> articles) {
@@ -31,11 +34,12 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
     }
 
     static class ViewHolder {
+        private ListView list;
         private TextView contentView;
         private ImageView imageView;
         private Button save_button;
         private Button comment_button;
-        int position;
+        private int position;
     }
 
     @Override
@@ -52,6 +56,7 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
             holder.save_button = (Button) convertView.findViewById(R.id.save_button);
             holder.comment_button = (Button) convertView.findViewById(R.id.comment_button);
             holder.position = position;
+            holder.list = (ListView) convertView.findViewById(R.id.articlesList);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -65,6 +70,8 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
                 } else {
                     DataHolder.delete(article);
                 }
+                //View view = holder.list.getChildAt(holder.position); //- listViewItems.getFirstVisiblePosition());
+                //view.invalidate();
                 notifyDataSetChanged();
             }
         });

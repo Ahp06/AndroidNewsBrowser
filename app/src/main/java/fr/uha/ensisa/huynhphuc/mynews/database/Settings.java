@@ -1,16 +1,11 @@
-package fr.uha.ensisa.huynhphuc.mynews;
+package fr.uha.ensisa.huynhphuc.mynews.database;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import fr.uha.ensisa.huynhphuc.mynews.BuildConfig;
 
-public class Settings {
+public class Settings implements Parcelable {
 
     private final static String BASE_URL = "https://newsapi.org/v2/everything?";
     private final static String API_KEY = BuildConfig.ApiKey;
@@ -30,6 +25,27 @@ public class Settings {
         this.from = from;
         this.to = to;
     }
+
+    protected Settings(Parcel in) {
+        queryWithSettings = in.readString();
+        language = in.readString();
+        pageSize = in.readString();
+        sortBy = in.readString();
+        from = in.readString();
+        to = in.readString();
+    }
+
+    public static final Creator<Settings> CREATOR = new Creator<Settings>() {
+        @Override
+        public Settings createFromParcel(Parcel in) {
+            return new Settings(in);
+        }
+
+        @Override
+        public Settings[] newArray(int size) {
+            return new Settings[size];
+        }
+    };
 
     public String getLanguage() {
         return language;
@@ -117,5 +133,20 @@ public class Settings {
                 ", from='" + from + '\'' +
                 ", to='" + to + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(queryWithSettings);
+        dest.writeString(language);
+        dest.writeString(pageSize);
+        dest.writeString(sortBy);
+        dest.writeString(from);
+        dest.writeString(to);
     }
 }

@@ -1,6 +1,25 @@
 package fr.uha.ensisa.huynhphuc.mynews;
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import fr.uha.ensisa.huynhphuc.mynews.database.Article;
+import fr.uha.ensisa.huynhphuc.mynews.database.Comment;
+import fr.uha.ensisa.huynhphuc.mynews.database.Settings;
 
 public class DataHolder {
 
@@ -120,10 +139,10 @@ public class DataHolder {
         return null;
     }
 
-    public static boolean isCommented(Article article){
+    public static boolean isCommented(Article article) {
         boolean isCommented = false;
-        for(Comment comment : comments){
-            if(compare(article,comment.getArticle())){
+        for (Comment comment : comments) {
+            if (compare(article, comment.getArticle())) {
                 isCommented = true;
             }
         }
@@ -131,7 +150,7 @@ public class DataHolder {
         return isCommented;
     }
 
-    public static ArrayList<Comment> getComments(){
+    public static ArrayList<Comment> getComments() {
         return comments;
     }
 
@@ -139,7 +158,7 @@ public class DataHolder {
         history.add(query);
     }
 
-    public static ArrayList<String> getHistory(){
+    public static ArrayList<String> getHistory() {
         return history;
     }
 
@@ -165,5 +184,57 @@ public class DataHolder {
 
     public static void setDataLoaded(boolean dataLoaded) {
         dataLoaded = dataLoaded;
+    }
+
+    public static void writeSaved(Context context) {
+        String filename = "saved";
+        FileOutputStream outputStream;
+
+        Gson gson = new Gson();
+        String savedJson = gson.toJson(DataHolder.getSavedArticles());
+
+        try {
+            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(savedJson.getBytes());
+            //outputStream.flush();
+            File fileDir = new File(context.getFilesDir(), filename);
+            Toast.makeText(context, "File saved at : " + fileDir, Toast.LENGTH_LONG).show();
+            outputStream.close();
+
+            Log.d("DataHolder", "Write done");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Article> readSaved(Context context) {
+        String filename = "saved";
+        FileInputStream fis;
+
+        Gson gson = new Gson();
+        try {
+            fis = context.getApplicationContext().openFileInput(filename);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+
+            String savedJson;
+            while ((savedJson = bufferedReader.readLine()) != null) {
+                sb.append(savedJson);
+            }
+            fis.close();
+
+            Type articlesType = new TypeToken<ArrayList<Article>>() {
+            }.getType();
+
+            return  gson.fromJson(sb.toString(), articlesType);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -1,12 +1,8 @@
-package fr.uha.ensisa.huynhphuc.mynews;
+package fr.uha.ensisa.huynhphuc.mynews.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,9 +16,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,12 +24,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.R;
+import fr.uha.ensisa.huynhphuc.mynews.activity.ArticlesListActivity;
+import fr.uha.ensisa.huynhphuc.mynews.activity.SavedArticlesActivity;
+import fr.uha.ensisa.huynhphuc.mynews.activity.SettingsActivity;
+import fr.uha.ensisa.huynhphuc.mynews.database.Article;
+import fr.uha.ensisa.huynhphuc.mynews.database.Settings;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -125,10 +125,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(!DataHolder.isDataLoaded()){
-            this.loadData();
-        }
-
         if (DataHolder.getSettings() == null) {
             Calendar current = Calendar.getInstance();
             int current_year = current.get(Calendar.YEAR);
@@ -179,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.settings_item) {
@@ -222,71 +219,5 @@ public class MainActivity extends AppCompatActivity {
             this.backPressed = true;
         }
     }
-
-    public void saveData() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences (this);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        Gson gson = new Gson();
-        String commentsJson = gson.toJson(DataHolder.getComments());
-        String savedJson = gson.toJson(DataHolder.getSavedArticles());
-        String settingsJson = gson.toJson(DataHolder.getSettings());
-        String historyJson = gson.toJson(DataHolder.getHistory());
-
-        editor.putString("comments", commentsJson);
-        editor.putString("saved", savedJson);
-        editor.putString("settings", settingsJson);
-        editor.putString("history", historyJson);
-
-        Log.d("MAIN save Log", "History=" + historyJson);
-        Log.d("MAIN save Log", "Saved=" + savedJson);
-        Log.d("MAIN save Log", "Settings=" + settingsJson);
-        Log.d("MAIN save Log", "Comments=" + commentsJson);
-
-        editor.apply();
-    }
-
-    public void loadData() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences (this);
-        Gson gson = new Gson();
-
-        String commentsJson = sharedPreferences.getString("comments", null);
-        String savedJson = sharedPreferences.getString("saved", null);
-        String settingsJson = sharedPreferences.getString("settings", null);
-        String historyJson = sharedPreferences.getString("history", null);
-
-        Log.d("MAIN load Log", "History=" + historyJson);
-        Log.d("MAIN load Log", "Saved=" + savedJson);
-        Log.d("MAIN load Log", "Settings=" + settingsJson);
-        Log.d("MAIN load Log", "Comments=" + commentsJson);
-
-        Type commentsType = new TypeToken<ArrayList<Comment>>() {
-        }.getType();
-        Type articlesType = new TypeToken<ArrayList<Article>>() {
-        }.getType();
-        Type settingsType = new TypeToken<Settings>() {
-        }.getType();
-        Type historyType = new TypeToken<ArrayList<String>>() {
-        }.getType();
-
-        ArrayList<Comment> comments = gson.fromJson(commentsJson, commentsType);
-        ArrayList<Article> saved = gson.fromJson(savedJson, articlesType);
-        Settings settings = gson.fromJson(settingsJson, settingsType);
-        ArrayList<String> history = gson.fromJson(historyJson, historyType);
-
-        if (comments != null) DataHolder.setComments(comments);
-        if (saved != null) DataHolder.setSavedArticles(saved);
-        if (settings != null) DataHolder.setSettings(settings);
-        if (history != null) DataHolder.setHistory(history);
-
-        DataHolder.setDataLoaded(true);
-    }
-
-    @Override
-    protected void onDestroy() {
-        this.saveData();
-        super.onDestroy();
-    }
-
 
 }

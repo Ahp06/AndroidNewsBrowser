@@ -11,18 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ArticlesListActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".SavedArticlesActivity" />
+        <activity android:name=".activity.ArticlesListActivity" />
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.SavedArticlesActivity" />
         <activity
-            android:name=".CommentActivity"
+            android:name=".activity.CommentActivity"
             android:label="@string/title_activity_comment"></activity>
     </application>
 

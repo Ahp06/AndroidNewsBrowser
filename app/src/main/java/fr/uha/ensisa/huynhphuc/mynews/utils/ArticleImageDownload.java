@@ -1,4 +1,4 @@
-package fr.uha.ensisa.huynhphuc.mynews;
+package fr.uha.ensisa.huynhphuc.mynews.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+
+import fr.uha.ensisa.huynhphuc.mynews.R;
 
 public class ArticleImageDownload extends AsyncTask<String, Void, Bitmap> {
 

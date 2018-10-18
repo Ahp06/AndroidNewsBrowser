@@ -1,14 +1,17 @@
-package fr.uha.ensisa.huynhphuc.mynews;
+package fr.uha.ensisa.huynhphuc.mynews.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import fr.uha.ensisa.huynhphuc.mynews.database.Comment;
+import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.R;
+import fr.uha.ensisa.huynhphuc.mynews.database.Article;
 
 public class CommentActivity extends Activity {
 

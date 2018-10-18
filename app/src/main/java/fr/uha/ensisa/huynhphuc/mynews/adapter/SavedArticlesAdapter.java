@@ -1,9 +1,8 @@
-package fr.uha.ensisa.huynhphuc.mynews;
+package fr.uha.ensisa.huynhphuc.mynews.adapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +18,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.R;
+import fr.uha.ensisa.huynhphuc.mynews.activity.CommentActivity;
+import fr.uha.ensisa.huynhphuc.mynews.database.Article;
+import fr.uha.ensisa.huynhphuc.mynews.utils.ArticleImageDownload;
+
+import static android.app.Activity.RESULT_CANCELED;
 
 public class SavedArticlesAdapter extends ArrayAdapter<Article> {
-
 
     public SavedArticlesAdapter(Context context, ArrayList<Article> articles) {
         super(context, 0, articles);
@@ -78,6 +85,7 @@ public class SavedArticlesAdapter extends ArrayAdapter<Article> {
                     delete_button.setText(R.string.cancel_delete_text);
                     DataHolder.addToDelete(article);
                     Log.d("Log del","to delete = " + DataHolder.getToDelete());
+
                 } else {
                     delete_button.setText(R.string.delete_text);
                     DataHolder.removeToDelete(article);
