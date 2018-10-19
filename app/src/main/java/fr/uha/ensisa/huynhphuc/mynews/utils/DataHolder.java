@@ -2,7 +2,6 @@ package fr.uha.ensisa.huynhphuc.mynews.utils;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -186,52 +185,60 @@ public class DataHolder {
         dataLoaded = dataLoaded;
     }
 
-    public static void writeSaved(Context context) {
-        String filename = "saved";
+    public static void writeData(Context context, String data_type) {
+
         FileOutputStream outputStream;
-
         Gson gson = new Gson();
-        Log.d("DataHolder","saved articles in holder = " + DataHolder.getSavedArticles());
-        String savedJson = gson.toJson(DataHolder.getSavedArticles());
 
-        File fileDir = new File(context.getFilesDir(), filename);
+        String json = null;
+        if (data_type == "saved") json = gson.toJson(DataHolder.getSavedArticles());
+        if (data_type == "comments") json = gson.toJson(DataHolder.getComments());
+        if (data_type == "history") json = gson.toJson(DataHolder.getHistory());
+        if (data_type == "settings") json = gson.toJson(DataHolder.getSettings());
+
+        File fileDir = new File(context.getFilesDir(), data_type);
         fileDir.delete();
 
         try {
-            outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
-            outputStream.write(savedJson.getBytes());
+            outputStream = context.openFileOutput(data_type, Context.MODE_PRIVATE);
+            outputStream.write(json.getBytes());
             outputStream.flush();
-            fileDir = new File(context.getFilesDir(), filename);
-            Toast.makeText(context, "File saved at : " + fileDir, Toast.LENGTH_LONG).show();
+            fileDir = new File(context.getFilesDir(), data_type);
             outputStream.close();
 
-            Log.d("DataHolder", "Write done");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static ArrayList<Article> readSaved(Context context) {
-        String filename = "saved";
+    public static Object readData(Context context, String data_type) {
         FileInputStream fis;
 
         Gson gson = new Gson();
         try {
-            fis = context.getApplicationContext().openFileInput(filename);
+            fis = context.getApplicationContext().openFileInput(data_type);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
 
-            String savedJson;
-            while ((savedJson = bufferedReader.readLine()) != null) {
-                sb.append(savedJson);
+            String json;
+            while ((json = bufferedReader.readLine()) != null) {
+                sb.append(json);
             }
             fis.close();
 
-            Type articlesType = new TypeToken<ArrayList<Article>>() {
+            Type type = null;
+            if (data_type == "saved") type = new TypeToken<ArrayList<Article>>() {
+            }.getType();
+            if (data_type == "comments") type = new TypeToken<ArrayList<Comment>>() {
+            }.getType();
+            if (data_type == "history") type = new TypeToken<ArrayList<String>>() {
+            }.getType();
+            if (data_type == "settings") type = new TypeToken<Settings>() {
             }.getType();
 
-            return  gson.fromJson(sb.toString(), articlesType);
+
+            return gson.fromJson(sb.toString(), type);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -240,5 +247,43 @@ public class DataHolder {
         }
 
         return null;
+    }
+
+    public static void loadAllData(Context context) {
+
+        ArrayList<Article> saved =(ArrayList<Article>) DataHolder.readData(context, "saved");
+        ArrayList<Comment> comments = (ArrayList<Comment>) DataHolder.readData(context, "comments");
+        ArrayList<String> history = (ArrayList<String>) DataHolder.readData(context, "history");
+        Settings settings = (Settings) DataHolder.readData(context, "settings");
+
+        if(saved != null){
+            DataHolder.setSavedArticles(saved);
+        } else {
+            DataHolder.setSavedArticles(new ArrayList<Article>());
+        }
+
+        if(comments != null){
+            DataHolder.setComments(comments);
+        } else {
+            DataHolder.setComments(new ArrayList<Comment>());
+        }
+
+        if(history != null){
+            DataHolder.setHistory(history);
+        } else {
+            DataHolder.setHistory(new ArrayList<String>());
+        }
+
+        if(settings != null){
+            DataHolder.setSettings(settings);
+        } else {
+            DataHolder.setSettings(new Settings());
+        }
+
+        Log.d("Test", "DataHolder Saved = " + DataHolder.getSavedArticles());
+        Log.d("Test", "DataHolder Comments = " + DataHolder.getComments());
+        Log.d("Test", "DataHolder History = " + DataHolder.getHistory());
+        Log.d("Test", "DataHolder Settings = " + DataHolder.getSettings());
+
     }
 }

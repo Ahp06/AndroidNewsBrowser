@@ -3,7 +3,10 @@ package fr.uha.ensisa.huynhphuc.mynews.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Calendar;
+
 import fr.uha.ensisa.huynhphuc.mynews.BuildConfig;
+import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
 
 public class Settings implements Parcelable {
 
@@ -25,6 +28,31 @@ public class Settings implements Parcelable {
         this.from = from;
         this.to = to;
     }
+
+    //default settings
+    public Settings(){
+        Calendar current = Calendar.getInstance();
+        int current_year = current.get(Calendar.YEAR);
+        int current_day = current.get(Calendar.DAY_OF_MONTH);
+        int current_month = current.get(Calendar.MONTH);
+        //Current date
+        String to = current_year + "-" + (current_month + 1) + "-" + current_day;
+
+        Calendar before = current;
+        before.add(Calendar.DAY_OF_WEEK, -7); // 7 days before today
+        int before_year = before.get(Calendar.YEAR);
+        int before_day = before.get(Calendar.DAY_OF_MONTH);
+        int before_month = before.get(Calendar.MONTH);
+
+        String from = before_year + "-" + (before_month + 1) + "-" + before_day;
+
+        this.language = "fr";
+        this.pageSize = "20";
+        this.sortBy = "Date";
+        this.from = from;
+        this.to = to;
+    }
+
 
     protected Settings(Parcel in) {
         queryWithSettings = in.readString();

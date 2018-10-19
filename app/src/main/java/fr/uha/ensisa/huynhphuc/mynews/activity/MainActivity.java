@@ -26,7 +26,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -122,24 +124,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (DataHolder.getSettings() == null) {
-            Calendar current = Calendar.getInstance();
-            int current_year = current.get(Calendar.YEAR);
-            int current_day = current.get(Calendar.DAY_OF_MONTH);
-            int current_month = current.get(Calendar.MONTH);
-            //Current date
-            String to = current_year + "-" + (current_month + 1) + "-" + current_day;
-
-            Calendar before = current;
-            before.add(Calendar.DAY_OF_WEEK, -7); // 7 days before today
-            int before_year = before.get(Calendar.YEAR);
-            int before_day = before.get(Calendar.DAY_OF_MONTH);
-            int before_month = before.get(Calendar.MONTH);
-
-            String from = before_year + "-" + (before_month + 1) + "-" + before_day;
-
-            //default settings
-            DataHolder.updateSettings(new Settings("fr", "20", "Date", from, to));
+        if(!DataHolder.isDataLoaded()){
+           DataHolder.loadAllData(this);
         }
 
         //we execute the search if the user presses confirm with the keyboard

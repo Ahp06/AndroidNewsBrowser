@@ -58,7 +58,7 @@ public class SavedArticlesAdapter extends ArrayAdapter<Article> {
         String dateFormatted = outputFormatter.format(date);
 
         String author;
-        if(article.getUrlToImage() != "null"){
+        if(article.getAuthor() != "null"){
             author = article.getAuthor();
         } else {
             author = getContext().getString(R.string.unknow_author);
@@ -81,13 +81,11 @@ public class SavedArticlesAdapter extends ArrayAdapter<Article> {
                 if (DataHolder.isSaved(article,DataHolder.SAVED_ACTIVITY)){
                     delete_button.setText(R.string.cancel_delete_text);
                     DataHolder.addToDelete(article);
-                    Log.d("Log del","to delete = " + DataHolder.getToDelete());
-
                 } else {
                     delete_button.setText(R.string.delete_text);
                     DataHolder.removeToDelete(article);
-                    Log.d(this.getClass().getName(),"to delete = " + DataHolder.getToDelete());
                 }
+               // Log.d("DataHolder","ToDelete = " + DataHolder.getToDelete());
             }
         });
 

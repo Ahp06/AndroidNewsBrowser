@@ -28,7 +28,7 @@ public class SavedArticlesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_articles);
 
-        this.saved_articles = DataHolder.readSaved(this.getApplicationContext());
+        this.saved_articles = (ArrayList<Article>) DataHolder.readData(this,"saved");
 
         Log.d("Read saved", "saved = " + this.saved_articles);
 
@@ -57,10 +57,13 @@ public class SavedArticlesActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             Intent intent = new Intent(this, MainActivity.class);
-            DataHolder.getSavedArticles().removeAll(DataHolder.getToDelete());
-            DataHolder.getToDelete().clear();
-            DataHolder.writeSaved(getApplicationContext());
 
+            for(Article toDel : DataHolder.getToDelete()){
+                DataHolder.delete(toDel);
+            }
+
+            DataHolder.getToDelete().clear();
+            DataHolder.writeData(this,"saved");
             startActivity(intent);
         }
         return super.onKeyDown(keyCode, event);
