@@ -1,4 +1,4 @@
-package fr.uha.ensisa.huynhphuc.mynews;
+package fr.uha.ensisa.huynhphuc.mynews.utils;
 
 import android.content.Context;
 import android.util.Log;
@@ -17,9 +17,9 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import fr.uha.ensisa.huynhphuc.mynews.database.Article;
-import fr.uha.ensisa.huynhphuc.mynews.database.Comment;
-import fr.uha.ensisa.huynhphuc.mynews.database.Settings;
+import fr.uha.ensisa.huynhphuc.mynews.model.Article;
+import fr.uha.ensisa.huynhphuc.mynews.model.Comment;
+import fr.uha.ensisa.huynhphuc.mynews.model.Settings;
 
 public class DataHolder {
 
@@ -191,13 +191,17 @@ public class DataHolder {
         FileOutputStream outputStream;
 
         Gson gson = new Gson();
+        Log.d("DataHolder","saved articles in holder = " + DataHolder.getSavedArticles());
         String savedJson = gson.toJson(DataHolder.getSavedArticles());
+
+        File fileDir = new File(context.getFilesDir(), filename);
+        fileDir.delete();
 
         try {
             outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
             outputStream.write(savedJson.getBytes());
-            //outputStream.flush();
-            File fileDir = new File(context.getFilesDir(), filename);
+            outputStream.flush();
+            fileDir = new File(context.getFilesDir(), filename);
             Toast.makeText(context, "File saved at : " + fileDir, Toast.LENGTH_LONG).show();
             outputStream.close();
 

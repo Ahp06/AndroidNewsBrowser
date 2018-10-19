@@ -1,6 +1,5 @@
 package fr.uha.ensisa.huynhphuc.mynews.adapter;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,11 +19,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
 import fr.uha.ensisa.huynhphuc.mynews.R;
 import fr.uha.ensisa.huynhphuc.mynews.activity.CommentActivity;
-import fr.uha.ensisa.huynhphuc.mynews.database.Article;
-import fr.uha.ensisa.huynhphuc.mynews.database.NewsViewModel;
+import fr.uha.ensisa.huynhphuc.mynews.model.Article;
 import fr.uha.ensisa.huynhphuc.mynews.utils.ArticleImageDownload;
 
 public class ArticlesAdapter extends ArrayAdapter<Article> {
@@ -70,6 +68,7 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
                 } else {
                     DataHolder.delete(article);
                 }
+                DataHolder.writeSaved(v.getContext());
                 //View view = holder.list.getChildAt(holder.position); //- listViewItems.getFirstVisiblePosition());
                 //view.invalidate();
                 notifyDataSetChanged();

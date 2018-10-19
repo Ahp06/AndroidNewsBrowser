@@ -30,13 +30,10 @@ import java.util.Calendar;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
 import fr.uha.ensisa.huynhphuc.mynews.R;
-import fr.uha.ensisa.huynhphuc.mynews.activity.ArticlesListActivity;
-import fr.uha.ensisa.huynhphuc.mynews.activity.SavedArticlesActivity;
-import fr.uha.ensisa.huynhphuc.mynews.activity.SettingsActivity;
-import fr.uha.ensisa.huynhphuc.mynews.database.Article;
-import fr.uha.ensisa.huynhphuc.mynews.database.Settings;
+import fr.uha.ensisa.huynhphuc.mynews.model.Article;
+import fr.uha.ensisa.huynhphuc.mynews.model.Settings;
 
 public class MainActivity extends AppCompatActivity {
 

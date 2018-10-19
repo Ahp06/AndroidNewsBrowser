@@ -13,9 +13,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import fr.uha.ensisa.huynhphuc.mynews.adapter.ArticlesAdapter;
-import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
 import fr.uha.ensisa.huynhphuc.mynews.R;
-import fr.uha.ensisa.huynhphuc.mynews.database.Article;
+import fr.uha.ensisa.huynhphuc.mynews.model.Article;
 
 public class ArticlesListActivity extends AppCompatActivity {
 

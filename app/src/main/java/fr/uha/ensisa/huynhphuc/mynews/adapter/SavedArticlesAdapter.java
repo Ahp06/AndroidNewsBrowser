@@ -18,15 +18,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
 import fr.uha.ensisa.huynhphuc.mynews.R;
 import fr.uha.ensisa.huynhphuc.mynews.activity.CommentActivity;
-import fr.uha.ensisa.huynhphuc.mynews.database.Article;
+import fr.uha.ensisa.huynhphuc.mynews.model.Article;
 import fr.uha.ensisa.huynhphuc.mynews.utils.ArticleImageDownload;
-
-import static android.app.Activity.RESULT_CANCELED;
 
 public class SavedArticlesAdapter extends ArrayAdapter<Article> {
 

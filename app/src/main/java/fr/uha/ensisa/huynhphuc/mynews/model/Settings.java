@@ -1,4 +1,4 @@
-package fr.uha.ensisa.huynhphuc.mynews.database;
+package fr.uha.ensisa.huynhphuc.mynews.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

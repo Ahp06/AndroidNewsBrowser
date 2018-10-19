@@ -1,10 +1,7 @@
 package fr.uha.ensisa.huynhphuc.mynews.activity;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,37 +12,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
 import fr.uha.ensisa.huynhphuc.mynews.R;
 import fr.uha.ensisa.huynhphuc.mynews.adapter.SavedArticlesAdapter;
-import fr.uha.ensisa.huynhphuc.mynews.database.Article;
-import fr.uha.ensisa.huynhphuc.mynews.database.NewsViewModel;
+import fr.uha.ensisa.huynhphuc.mynews.model.Article;
 
 public class SavedArticlesActivity extends AppCompatActivity {
 
     private ArrayList<Article> saved_articles;
     private SavedArticlesAdapter adapter;
-    private NewsViewModel newsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_articles);
 
-        newsViewModel = ViewModelProviders.of(this).get(NewsViewModel.class);
+        this.saved_articles = DataHolder.readSaved(this.getApplicationContext());
 
-        newsViewModel.getSavedArticles().observe(this, new Observer<List<Article>>() {
-            @Override
-            public void onChanged(@Nullable final List<Article> articles) {
-                // Update the cached copy of the words in the adapter.
-                Log.d("NewsViewModel", "Saved changed");
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        this.saved_articles = DataHolder.getSavedArticles();
+        Log.d("Read saved", "saved = " + this.saved_articles);
 
         final ListView listView = (ListView) findViewById(R.id.savedList);
         if (DataHolder.getSavedArticles().isEmpty()) {
@@ -74,6 +59,7 @@ public class SavedArticlesActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             DataHolder.getSavedArticles().removeAll(DataHolder.getToDelete());
             DataHolder.getToDelete().clear();
+            DataHolder.writeSaved(getApplicationContext());
 
             startActivity(intent);
         }

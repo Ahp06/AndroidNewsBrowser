@@ -16,10 +16,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import fr.uha.ensisa.huynhphuc.mynews.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
 import fr.uha.ensisa.huynhphuc.mynews.utils.DatePickerFragment;
 import fr.uha.ensisa.huynhphuc.mynews.R;
-import fr.uha.ensisa.huynhphuc.mynews.database.Settings;
+import fr.uha.ensisa.huynhphuc.mynews.model.Settings;
 
 public class SettingsActivity extends AppCompatActivity {
 
