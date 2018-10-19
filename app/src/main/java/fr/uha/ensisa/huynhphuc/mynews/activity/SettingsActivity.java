@@ -40,8 +40,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         this.settings = DataHolder.getSettings();
 
-        Log.d("SettingsActivity", " Settings =" + this.settings.toString());
-
 
         this.language_spinner = (Spinner) findViewById(R.id.language_spinner);
         this.pageSize_spinner = (Spinner) findViewById(R.id.pageSize_spinner);
@@ -100,6 +98,7 @@ public class SettingsActivity extends AppCompatActivity {
                     if (checkDates(from,to)){
                         Intent intent = new Intent(v.getContext(), MainActivity.class);
                         DataHolder.updateSettings(settings);
+                        DataHolder.writeData(v.getContext(),"settings");
                         startActivity(intent);
                     } else {
                         Toast.makeText(SettingsActivity.this, R.string.incorrect_date_choice, Toast.LENGTH_SHORT).show();

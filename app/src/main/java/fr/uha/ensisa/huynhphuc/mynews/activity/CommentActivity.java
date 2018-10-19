@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import fr.uha.ensisa.huynhphuc.mynews.model.Comment;
 import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
 import fr.uha.ensisa.huynhphuc.mynews.R;
@@ -23,6 +25,8 @@ public class CommentActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
+
+        //final ArrayList<Comment> comments = DataHolder.getComments();
 
         final TextView comment_text = (TextView) this.findViewById(R.id.comment);
         final Button cancel_button = (Button) this.findViewById(R.id.cancel_comment);
@@ -52,6 +56,7 @@ public class CommentActivity extends Activity {
                     String content = comment_text.getText().toString();
                     comment.setComment(content);
                     DataHolder.addComment(comment);
+                    DataHolder.writeData(v.getContext(),"comments");
                     if(!DataHolder.isSaved(article,DataHolder.LIST_ACTIVITY)){
                         DataHolder.save(article);
                     }

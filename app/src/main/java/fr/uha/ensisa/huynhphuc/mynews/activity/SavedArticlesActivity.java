@@ -28,7 +28,7 @@ public class SavedArticlesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_articles);
 
-        this.saved_articles = (ArrayList<Article>) DataHolder.readData(this,"saved");
+        this.saved_articles = DataHolder.getSavedArticles();
 
         Log.d("Read saved", "saved = " + this.saved_articles);
 

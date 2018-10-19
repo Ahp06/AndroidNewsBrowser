@@ -216,7 +216,7 @@ public class DataHolder {
 
         Gson gson = new Gson();
         try {
-            fis = context.getApplicationContext().openFileInput(data_type);
+            fis = context.openFileInput(data_type);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader bufferedReader = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
@@ -251,30 +251,30 @@ public class DataHolder {
 
     public static void loadAllData(Context context) {
 
-        ArrayList<Article> saved =(ArrayList<Article>) DataHolder.readData(context, "saved");
+        ArrayList<Article> saved = (ArrayList<Article>) DataHolder.readData(context, "saved");
         ArrayList<Comment> comments = (ArrayList<Comment>) DataHolder.readData(context, "comments");
         ArrayList<String> history = (ArrayList<String>) DataHolder.readData(context, "history");
         Settings settings = (Settings) DataHolder.readData(context, "settings");
 
-        if(saved != null){
+        if (saved != null) {
             DataHolder.setSavedArticles(saved);
         } else {
             DataHolder.setSavedArticles(new ArrayList<Article>());
         }
 
-        if(comments != null){
+        if (comments != null) {
             DataHolder.setComments(comments);
         } else {
             DataHolder.setComments(new ArrayList<Comment>());
         }
 
-        if(history != null){
+        if (history != null) {
             DataHolder.setHistory(history);
         } else {
             DataHolder.setHistory(new ArrayList<String>());
         }
 
-        if(settings != null){
+        if (settings != null) {
             DataHolder.setSettings(settings);
         } else {
             DataHolder.setSettings(new Settings());

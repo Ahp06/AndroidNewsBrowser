@@ -124,8 +124,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(!DataHolder.isDataLoaded()){
-           DataHolder.loadAllData(this);
+        if (!DataHolder.isDataLoaded()) {
+            Log.d("Test", "DataHolder Load all data");
+            DataHolder.loadAllData(this);
+            DataHolder.setDataLoaded(true);
         }
 
         //we execute the search if the user presses confirm with the keyboard
@@ -185,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Full query = ", DataHolder.getSettings().applySettings(query));
             new ArticleHttpRequest().execute(DataHolder.getSettings().applySettings(query));
             DataHolder.addIntoHistory(query);
+            DataHolder.writeData(this,"history");
         } else {
             Toast.makeText(this, R.string.empty_query, Toast.LENGTH_SHORT).show();
         }
