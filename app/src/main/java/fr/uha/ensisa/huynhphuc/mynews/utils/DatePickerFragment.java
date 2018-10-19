@@ -45,7 +45,25 @@ public class DatePickerFragment extends DialogFragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new DatePickerDialog(getActivity(), this, this.year, this.month, this.day);
+        Calendar current = Calendar.getInstance();
+        int current_year = current.get(Calendar.YEAR);
+        int current_day = current.get(Calendar.DAY_OF_MONTH);
+        int current_month = current.get(Calendar.MONTH);
+        //Current date
+        String to = current_year + "-" + (current_month + 1) + "-" + current_day;
+
+        Calendar before = current;
+        before.add(Calendar.MONTH, -1); // 7 days before today
+        int before_year = before.get(Calendar.YEAR);
+        int before_day = before.get(Calendar.DAY_OF_MONTH);
+        int before_month = before.get(Calendar.MONTH);
+
+        String from = before_year + "-" + (before_month + 1) + "-" + before_day;
+
+        DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, this.year, this.month, this.day);
+        dialog.getDatePicker().setMinDate(before.getTimeInMillis());
+
+        return dialog;
     }
 
     /**

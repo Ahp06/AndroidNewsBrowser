@@ -1,7 +1,9 @@
 package fr.uha.ensisa.huynhphuc.mynews.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,12 +16,16 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
-import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
-import fr.uha.ensisa.huynhphuc.mynews.utils.DatePickerFragment;
 import fr.uha.ensisa.huynhphuc.mynews.R;
 import fr.uha.ensisa.huynhphuc.mynews.model.Settings;
+import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
+import fr.uha.ensisa.huynhphuc.mynews.utils.DatePickerFragment;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -95,7 +101,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if(!to.equals("")) settings.setTo(to);
 
                 try {
-                    if (checkDates(from,to)){
+                    if (greater(from,to) && oneMonthTimeSlot(from,to)){
                         Intent intent = new Intent(v.getContext(), MainActivity.class);
                         DataHolder.updateSettings(settings);
                         DataHolder.writeData(v.getContext(),"settings");
@@ -112,18 +118,34 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
-    public boolean checkDates(String from, String to) throws ParseException {
+    public boolean greater(String from, String to) throws ParseException {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date from_date = sdf.parse(from);
         Date to_date = sdf.parse(to);
 
-        int ok = to_date.compareTo(from_date);
+        int greater = to_date.compareTo(from_date);
         // ok = 1 -> to_date > from_date
         // ok = 0 -> to_date = from_date
         // ok = -1 -> to_date < from_date
 
-        return ok == 1;
+        return greater == 1;
+    }
+
+    public boolean oneMonthTimeSlot(String from, String to) throws ParseException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date from_date = sdf.parse(from);
+        Date to_date = sdf.parse(to);
+
+        long diffInMillies = Math.abs(to_date.getTime() - from_date.getTime());
+        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+
+        Log.d("Test","Diff = " + diff);
+
+        return diff <= 31;
+
     }
 
     /**
