@@ -59,6 +59,7 @@ public class CommentActivity extends Activity {
                     DataHolder.writeData(v.getContext(),"comments");
                     if(!DataHolder.isSaved(article,DataHolder.LIST_ACTIVITY)){
                         DataHolder.save(article);
+                        DataHolder.writeData(v.getContext(),"saved");
                     }
                 }
                 finish(); //Go back to previous activity
@@ -84,6 +85,7 @@ public class CommentActivity extends Activity {
                 } else {
                     intent = new Intent(v.getContext(),SavedArticlesActivity.class);
                 }
+                DataHolder.writeData(v.getContext(),"comments");
                 startActivityForResult(intent, DataHolder.COMMENT_DELETED);
             }
         });

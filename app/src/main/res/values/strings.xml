@@ -144,5 +144,6 @@
     <string name="incorrect_date_choice">Choix des dates incorrect</string>
     <string name="empty_list">Aucun article ne correspond à votre recherche</string>
     <string name="empty_saved_text">Aucun article sauvegardé</string>
+    <string name="empty_history">Historique vide</string>
 
 </resources>

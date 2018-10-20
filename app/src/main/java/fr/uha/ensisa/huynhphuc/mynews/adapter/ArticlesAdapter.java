@@ -69,8 +69,6 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
                     DataHolder.delete(article);
                 }
                 DataHolder.writeData(v.getContext(),"saved");
-                //View view = holder.list.getChildAt(holder.position); //- listViewItems.getFirstVisiblePosition());
-                //view.invalidate();
                 notifyDataSetChanged();
             }
         });

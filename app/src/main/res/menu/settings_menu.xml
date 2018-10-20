@@ -10,9 +10,16 @@
         android:title="Saved"
         app:showAsAction="always" />
 
+    <item android:id="@+id/history_item"
+        android:icon="@drawable/ic_history_black_24dp"
+        android:title="History"
+        app:showAsAction="always" />
+
     <item android:id="@+id/settings_item"
         android:icon="@drawable/ic_settings_applications_black_24dp"
         android:title="Settings"
         app:showAsAction="always" />
+
+
 
 </menu>

@@ -23,7 +23,8 @@
         <activity android:name=".activity.SavedArticlesActivity" />
         <activity
             android:name=".activity.CommentActivity"
-            android:label="@string/title_activity_comment"></activity>
+            android:label="@string/title_activity_comment" />
+        <activity android:name=".activity.HistoryActivity"></activity>
     </application>
 
 </manifest>

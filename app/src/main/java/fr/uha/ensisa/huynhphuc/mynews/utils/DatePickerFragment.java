@@ -53,13 +53,14 @@ public class DatePickerFragment extends DialogFragment
         String to = current_year + "-" + (current_month + 1) + "-" + current_day;
 
         Calendar before = current;
-        before.add(Calendar.MONTH, -1); // 7 days before today
+        before.add(Calendar.MONTH, -1); // 1 month before today
         int before_year = before.get(Calendar.YEAR);
         int before_day = before.get(Calendar.DAY_OF_MONTH);
         int before_month = before.get(Calendar.MONTH);
 
         String from = before_year + "-" + (before_month + 1) + "-" + before_day;
 
+        //Set min date because the free version of NewsApi allows only a gap of one month between the two dates
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, this.year, this.month, this.day);
         dialog.getDatePicker().setMinDate(before.getTimeInMillis());
 
