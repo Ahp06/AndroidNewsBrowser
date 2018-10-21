@@ -3,6 +3,7 @@ package fr.uha.ensisa.huynhphuc.mynews.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import fr.uha.ensisa.huynhphuc.mynews.BuildConfig;
 import fr.uha.ensisa.huynhphuc.mynews.utils.DataHolder;
 import fr.uha.ensisa.huynhphuc.mynews.R;
 import fr.uha.ensisa.huynhphuc.mynews.model.Article;
@@ -149,6 +151,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 executeQueryWithSettings();
+            }
+        });
+
+        FloatingActionButton topNews = findViewById(R.id.top_news);
+        topNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ArticleHttpRequest()
+                        .execute("https://newsapi.org/v2/top-headlines?country=fr&apiKey=" + BuildConfig.ApiKey);
             }
         });
     }

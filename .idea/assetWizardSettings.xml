@@ -28,9 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_delete_white_24dp" />
-                            <entry key="sourceFile" value="C:\Users\Admin" />
+                            <entry key="outputName" value="ic_news" />
+                            <entry key="sourceFile" value="E:\Cours\3A\Android\news.svg" />
                           </map>
                         </option>
                       </PersistentState>
