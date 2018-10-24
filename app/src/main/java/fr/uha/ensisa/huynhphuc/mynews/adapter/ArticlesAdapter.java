@@ -27,6 +27,8 @@ import fr.uha.ensisa.huynhphuc.mynews.utils.ArticleImageDownload;
 
 public class ArticlesAdapter extends ArrayAdapter<Article> {
 
+    private ViewHolder holder;
+
     public ArticlesAdapter(Context context, ArrayList<Article> articles) {
         super(context, 0, articles);
     }
@@ -43,11 +45,11 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        final ViewHolder holder;
         final Article article = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_list, parent, false);
+
             holder = new ViewHolder();
             holder.contentView = (TextView) convertView.findViewById(R.id.articleContent);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imageView);
@@ -65,11 +67,12 @@ public class ArticlesAdapter extends ArrayAdapter<Article> {
             public void onClick(View v) {
                 if (!DataHolder.isSaved(article, DataHolder.LIST_ACTIVITY)) {
                     DataHolder.getSavedArticles().add(article);
+                    holder.save_button.setText(R.string.saved_text);
                 } else {
                     DataHolder.delete(article);
+                    holder.save_button.setText(R.string.save_text);
                 }
                 DataHolder.writeData(v.getContext(),"saved");
-                notifyDataSetChanged();
             }
         });
 
